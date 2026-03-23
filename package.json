@@ -6,7 +6,8 @@
     "start": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "test": "ng test",
+    "cbuild": "ng build --output-path=dist/uth-vpswallet-supplier-dev && echo /* /index.html 200> dist/uth-vpswallet-supplier-dev/browser/_redirects && powershell Compress-Archive -Path dist/uth-vpswallet-supplier-dev/browser/* -DestinationPath dist/uth-vpswallet-supplier-dev/uth-vpswallet-supplier-dev.zip"
   },
   "prettier": {
     "printWidth": 100,
@@ -30,7 +31,8 @@
     "@angular/platform-browser": "^21.0.0",
     "@angular/router": "^21.0.0",
     "rxjs": "~7.8.0",
-    "tslib": "^2.3.0"
+    "tslib": "^2.3.0",
+    "@fortawesome/fontawesome-free": "^7.1.0"
   },
   "devDependencies": {
     "@angular/build": "^21.0.4",
