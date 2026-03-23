@@ -10,7 +10,6 @@ export class AuthService extends ApiService {
 
     async login(req: LoginReq) {
         const url = API_ENDPOINTS.SUPPLIER.CONTROLLER + API_ENDPOINTS.SUPPLIER.LOGIN;
-        console.log("req", req)
         try {
             const resData = await lastValueFrom(this.post<LoginRes>(url, req));
             if (resData && resData.status === HttpStatusCode.Ok) {
