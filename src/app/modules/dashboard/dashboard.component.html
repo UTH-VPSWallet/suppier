@@ -1,0 +1,145 @@
+<div>
+  <!-- Welcome Banner -->
+  <div class="dash-welcome">
+    <div>
+      <h2 class="dash-welcome__title">Chào Admin! 👋</h2>
+      <p class="dash-welcome__sub">Đây là tổng quan hoạt động hôm nay của hệ thống VPS Wallet.</p>
+    </div>
+    <div class="dash-welcome__date">
+      📅 {{ currentDate }}
+    </div>
+  </div>
+
+  <!-- Stats Grid -->
+  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem; margin-bottom: 1.5rem;">
+    @for (stat of stats; track stat.label) {
+      <div class="crm-stat-card">
+        <div>
+          <div class="crm-stat-card__value">{{ stat.value }}</div>
+          <div class="crm-stat-card__label">{{ stat.label }}</div>
+          <div class="crm-stat-card__trend" [style.color]="stat.trendUp ? '#16a34a' : '#dc2626'">
+            {{ stat.trendUp ? '↑' : '↓' }} {{ stat.trend }}
+          </div>
+        </div>
+        <div class="crm-stat-card__icon-wrap" [style.background]="stat.iconBg">{{ stat.icon }}</div>
+      </div>
+    }
+  </div>
+
+  <!-- Revenue Overview (visual bar chart) -->
+  <div class="crm-table-card" style="margin-bottom: 1.5rem;">
+    <div class="crm-table-header">
+      <span class="crm-table-title">📈 Doanh Thu 7 Ngày Gần Đây</span>
+      <span style="font-size: 12px; color: #64748b;">Tổng: ₫48.5M</span>
+    </div>
+    <div style="padding: 1.25rem; display: flex; align-items: flex-end; gap: 0.75rem; height: 200px;">
+      @for (bar of revenueData; track bar.day) {
+        <div style="flex: 1; display: flex; flex-direction: column; align-items: center; gap: 0.5rem; height: 100%;">
+          <div style="flex: 1; width: 100%; display: flex; align-items: flex-end;">
+            <div
+              class="dash-bar"
+              [style.height]="bar.percent + '%'"
+              [style.background]="bar.isToday ? 'linear-gradient(180deg, #22c55e, #16a34a)' : '#e2e8f0'"
+              [title]="bar.value"
+            ></div>
+          </div>
+          <span style="font-size: 11px; color: #64748b; font-weight: 600;">{{ bar.day }}</span>
+        </div>
+      }
+    </div>
+  </div>
+
+  <div style="display: grid; grid-template-columns: 1fr 340px; gap: 1rem;">
+    <!-- Recent Orders Table -->
+    <div class="crm-table-card">
+      <div class="crm-table-header">
+        <span class="crm-table-title">📋 Đơn Hàng Gần Đây</span>
+        <a href="/orders" style="font-size: 13px; color: #22c55e; font-weight: 600; text-decoration: none;">Xem tất cả →</a>
+      </div>
+      <table style="width: 100%; border-collapse: collapse; font-size: 13px;">
+        <thead>
+          <tr style="border-bottom: 1px solid #f1f5f9;">
+            <th style="text-align: left; padding: 0.75rem 1rem; color: #64748b; font-weight: 600; font-size: 11px; text-transform: uppercase;">Mã ĐH</th>
+            <th style="text-align: left; padding: 0.75rem 1rem; color: #64748b; font-weight: 600; font-size: 11px; text-transform: uppercase;">Khách hàng</th>
+            <th style="text-align: left; padding: 0.75rem 1rem; color: #64748b; font-weight: 600; font-size: 11px; text-transform: uppercase;">Sản phẩm</th>
+            <th style="text-align: right; padding: 0.75rem 1rem; color: #64748b; font-weight: 600; font-size: 11px; text-transform: uppercase;">Giá trị</th>
+            <th style="text-align: center; padding: 0.75rem 1rem; color: #64748b; font-weight: 600; font-size: 11px; text-transform: uppercase;">Trạng thái</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (order of recentOrders; track order.id) {
+            <tr class="dash-table-row">
+              <td style="padding: 0.75rem 1rem; font-weight: 600; color: #1e293b;">{{ order.id }}</td>
+              <td style="padding: 0.75rem 1rem; color: #374151;">{{ order.customer }}</td>
+              <td style="padding: 0.75rem 1rem; color: #64748b; font-size: 12px;">{{ order.product }}</td>
+              <td style="padding: 0.75rem 1rem; text-align: right; font-weight: 600; color: #15803d;">{{ order.amount | currency:'VND':'symbol':'0.0-0':'vi' }}₫</td>
+              <td style="padding: 0.75rem 1rem; text-align: center;">
+                <span class="status-badge" [class]="'status-' + order.status">{{ statusLabel(order.status) }}</span>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Sidebar Widgets -->
+    <div style="display: flex; flex-direction: column; gap: 1rem;">
+      <!-- Activity Timeline -->
+      <div class="crm-table-card">
+        <div class="crm-table-header">
+          <span class="crm-table-title">🕐 Hoạt Động Gần Đây</span>
+        </div>
+        <div style="padding: 0.75rem 1.25rem;">
+          @for (act of activities; track act.text; let last = $last) {
+            <div class="dash-activity" [class.dash-activity--last]="last">
+              <div class="dash-activity__dot" [style.background]="act.color"></div>
+              <div style="flex: 1; min-width: 0;">
+                <div class="dash-activity__icon">{{ act.icon }}</div>
+                <div style="font-size: 13px; color: #374151; line-height: 1.4;">{{ act.text }}</div>
+                <div style="font-size: 11px; color: #94a3b8; margin-top: 2px;">{{ act.time }}</div>
+              </div>
+            </div>
+          }
+        </div>
+      </div>
+
+      <!-- Top Products -->
+      <div class="crm-table-card">
+        <div class="crm-table-header">
+          <span class="crm-table-title">🏆 VPS Bán Chạy</span>
+        </div>
+        <div style="padding: 0.75rem 1rem;">
+          @for (p of topProducts; track p.name; let i = $index) {
+            <div style="display: flex; align-items: center; gap: 0.75rem; padding: 0.5rem 0; border-bottom: 1px solid #f1f5f9;">
+              <span style="width: 24px; height: 24px; background: #f1f5f9; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; color: #64748b; flex-shrink: 0;">{{ i + 1 }}</span>
+              <div style="flex: 1; min-width: 0;">
+                <div style="font-size: 13px; font-weight: 600; color: #1e293b; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ p.name }}</div>
+                <div style="font-size: 11px; color: #94a3b8;">{{ p.provider }}</div>
+              </div>
+              <div style="text-align: right; flex-shrink: 0;">
+                <div style="font-size: 12px; font-weight: 700; color: #15803d;">{{ p.revenue }}</div>
+                <div style="font-size: 11px; color: #94a3b8;">{{ p.orders }} đơn</div>
+              </div>
+            </div>
+          }
+        </div>
+      </div>
+
+      <!-- Geographic Distribution -->
+      <div class="crm-table-card" style="padding: 1rem 1.25rem;">
+        <div class="crm-table-title" style="margin-bottom: 1rem;">📍 Phân bố địa lý</div>
+        @for (loc of locations; track loc.name) {
+          <div style="margin-bottom: 0.75rem;">
+            <div style="display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 4px;">
+              <span style="color: #374151;">{{ loc.name }}</span>
+              <span style="font-weight: 600; color: #1e293b;">{{ loc.percent }}%</span>
+            </div>
+            <div style="background: #f1f5f9; border-radius: 99px; height: 6px;">
+              <div [style.width]="loc.percent + '%'" style="background: #22c55e; border-radius: 99px; height: 6px; transition: width 1s ease;"></div>
+            </div>
+          </div>
+        }
+      </div>
+    </div>
+  </div>
+</div>

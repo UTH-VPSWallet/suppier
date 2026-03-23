@@ -1,3 +1,705 @@
 /* You can add global styles to this file, and also import other style files */
 
 @import "tailwindcss";
+/* VPS CRM - Global Styles */
+
+:root {
+  --brand-green: #22c55e;
+  --brand-green-dark: #16a34a;
+  --brand-green-light: #dcfce7;
+  --sidebar-width: 260px;
+  --topbar-height: 64px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Inter', 'Be Vietnam Pro', sans-serif;
+  background: #f8fafc;
+  color: #1e293b;
+  margin: 0;
+  padding: 0;
+}
+
+/* Sidebar */
+.crm-sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: var(--sidebar-width);
+  height: 100vh;
+  background: #0f172a;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+}
+
+.crm-sidebar__logo {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1.25rem 1.5rem;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+
+.crm-sidebar__logo-icon {
+  width: 38px;
+  height: 38px;
+  background: var(--brand-green);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 14px;
+  color: white;
+}
+
+.crm-logo-text {
+  color: white;
+  font-weight: 700;
+  font-size: 1rem;
+  line-height: 1.2;
+}
+
+.crm-logo-sub {
+  color: rgba(255,255,255,0.4);
+  font-size: 11px;
+}
+
+.crm-sidebar__nav {
+  flex: 1;
+  overflow-y: auto;
+  padding: 0.75rem 0;
+}
+
+.crm-nav-section {
+  padding: 0.5rem 1rem;
+  margin-top: 0.5rem;
+}
+
+.crm-nav-section__label {
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: rgba(255,255,255,0.25);
+  display: block;
+  margin-bottom: 0.25rem;
+}
+
+.crm-nav-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.65rem 1rem;
+  border-radius: 10px;
+  margin: 0.15rem 0.5rem;
+  color: rgba(255,255,255,0.6);
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.15s ease;
+}
+
+.crm-nav-item:hover {
+  background: rgba(255,255,255,0.06);
+  color: white;
+}
+
+.crm-nav-item.active {
+  background: var(--brand-green);
+  color: white;
+  box-shadow: 0 4px 12px rgba(34, 197, 94, 0.3);
+}
+
+.crm-nav-item .nav-badge {
+  margin-left: auto;
+  background: rgba(255,255,255,0.15);
+  color: white;
+  font-size: 10px;
+  padding: 2px 7px;
+  border-radius: 99px;
+  font-weight: 600;
+}
+
+/* Main area */
+.crm-main {
+  margin-left: var(--sidebar-width);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Topbar */
+.crm-topbar {
+  height: var(--topbar-height);
+  background: white;
+  border-bottom: 1px solid #e2e8f0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 1.5rem;
+  position: sticky;
+  top: 0;
+  z-index: 900;
+  gap: 1rem;
+}
+
+.crm-topbar__title {
+  font-weight: 700;
+  font-size: 1.1rem;
+  color: #1e293b;
+}
+
+.crm-topbar__actions {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.crm-icon-btn {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  border: none;
+  background: #f1f5f9;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background 0.15s;
+}
+
+.crm-icon-btn:hover {
+  background: #e2e8f0;
+}
+
+.crm-avatar {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--brand-green), var(--brand-green-dark));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: 700;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+/* Content */
+.crm-content {
+  flex: 1;
+  padding: 1.5rem;
+}
+
+/* Stat Cards */
+.crm-stat-card {
+  background: white;
+  border-radius: 16px;
+  padding: 1.25rem 1.5rem;
+  border: 1px solid #e2e8f0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  transition: box-shadow 0.2s, transform 0.2s;
+}
+
+.crm-stat-card:hover {
+  box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+  transform: translateY(-2px);
+}
+
+.crm-stat-card__value {
+  font-size: 1.75rem;
+  font-weight: 800;
+  color: #0f172a;
+  line-height: 1;
+}
+
+.crm-stat-card__label {
+  font-size: 13px;
+  color: #64748b;
+  margin-top: 4px;
+}
+
+.crm-stat-card__trend {
+  font-size: 12px;
+  font-weight: 600;
+  margin-top: 4px;
+}
+
+.crm-stat-card__icon-wrap {
+  width: 52px;
+  height: 52px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  flex-shrink: 0;
+}
+
+/* Table card */
+.crm-table-card {
+  background: white;
+  border-radius: 16px;
+  border: 1px solid #e2e8f0;
+  overflow: hidden;
+}
+
+.crm-table-header {
+  padding: 1rem 1.25rem;
+  border-bottom: 1px solid #f1f5f9;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.crm-table-title {
+  font-weight: 700;
+  font-size: 15px;
+  color: #1e293b;
+}
+
+/* Status badges */
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 10px;
+  border-radius: 99px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.status-active    { background: #dcfce7; color: #15803d; }
+.status-pending   { background: #fef9c3; color: #854d0e; }
+.status-paid      { background: #dbeafe; color: #1d4ed8; }
+.status-expired   { background: #f1f5f9; color: #64748b; }
+.status-cancelled { background: #fee2e2; color: #b91c1c; }
+
+/* ==============================
+   Auth Pages (Login / Register / Forgot Password)
+   ============================== */
+.auth-page {
+  min-height: 100vh;
+  display: flex;
+  background: #f0fdf4;
+}
+
+.auth-card {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 3rem 2.5rem;
+  max-width: 520px;
+  margin: 0 auto;
+}
+
+.auth-logo {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.auth-logo__icon {
+  width: 56px;
+  height: 56px;
+  background: linear-gradient(135deg, #22c55e, #16a34a);
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 18px;
+  color: white;
+  margin: 0 auto 0.75rem;
+  box-shadow: 0 8px 24px rgba(34, 197, 94, 0.3);
+}
+
+.auth-logo__title {
+  font-size: 1.75rem;
+  font-weight: 800;
+  color: #0f172a;
+  margin: 0;
+}
+
+.auth-logo__sub {
+  color: #64748b;
+  font-size: 14px;
+  margin-top: 0.25rem;
+}
+
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.auth-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+}
+
+.auth-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: #374151;
+}
+
+.auth-input-wrap {
+  display: flex;
+  align-items: center;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 12px;
+  background: white;
+  transition: all 0.2s;
+  overflow: hidden;
+}
+
+.auth-input-wrap:focus-within {
+  border-color: #22c55e;
+  box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.1);
+}
+
+.auth-input-icon {
+  padding-left: 0.875rem;
+  font-size: 16px;
+  flex-shrink: 0;
+}
+
+.auth-input {
+  flex: 1;
+  border: none;
+  outline: none;
+  padding: 0.75rem 0.875rem;
+  font-size: 14px;
+  background: transparent;
+  color: #1e293b;
+  font-family: inherit;
+}
+
+.auth-input::placeholder {
+  color: #94a3b8;
+}
+
+.auth-toggle-pw {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0 0.75rem;
+  font-size: 16px;
+  color: #94a3b8;
+}
+
+.auth-btn {
+  width: 100%;
+  padding: 0.875rem;
+  font-size: 15px;
+  font-weight: 700;
+  color: white;
+  background: linear-gradient(135deg, #22c55e, #16a34a);
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.2s;
+  margin-top: 0.5rem;
+  box-shadow: 0 4px 14px rgba(34, 197, 94, 0.3);
+  font-family: inherit;
+  text-decoration: none;
+  text-align: center;
+}
+
+.auth-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(34, 197, 94, 0.4);
+}
+
+.auth-btn--outline {
+  background: white;
+  color: #22c55e;
+  border: 1.5px solid #22c55e;
+  box-shadow: none;
+}
+
+.auth-btn--outline:hover {
+  background: #f0fdf4;
+  box-shadow: none;
+}
+
+.auth-divider {
+  position: relative;
+  text-align: center;
+  margin: 1.5rem 0;
+}
+
+.auth-divider::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  height: 1px;
+  background: #e2e8f0;
+}
+
+.auth-divider span {
+  position: relative;
+  background: #f0fdf4;
+  padding: 0 1rem;
+  font-size: 12px;
+  color: #94a3b8;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.auth-social-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+}
+
+.auth-social-btn {
+  padding: 0.7rem;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 12px;
+  background: white;
+  font-size: 13px;
+  font-weight: 600;
+  color: #374151;
+  cursor: pointer;
+  transition: all 0.15s;
+  font-family: inherit;
+}
+
+.auth-social-btn:hover {
+  border-color: #cbd5e1;
+  background: #f8fafc;
+}
+
+.auth-footer-text {
+  text-align: center;
+  font-size: 14px;
+  color: #64748b;
+  margin-top: 1.5rem;
+}
+
+.auth-link {
+  color: #22c55e;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.auth-link:hover {
+  text-decoration: underline;
+}
+
+.auth-link-sm {
+  font-size: 12px;
+  color: #22c55e;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.auth-link-sm:hover {
+  text-decoration: underline;
+}
+
+/* Success State (Forgot Password) */
+.auth-success {
+  text-align: center;
+  padding: 1.5rem 0;
+}
+
+.auth-success__icon {
+  font-size: 48px;
+  margin-bottom: 1rem;
+}
+
+.auth-success__title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #0f172a;
+  margin: 0 0 0.5rem;
+}
+
+.auth-success__desc {
+  color: #64748b;
+  font-size: 14px;
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+}
+
+/* Branding Panel */
+.auth-branding {
+  flex: 1;
+  background: linear-gradient(135deg, #0f172a 0%, #1e3a2f 50%, #0f172a 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.auth-branding::before {
+  content: '';
+  position: absolute;
+  width: 300px;
+  height: 300px;
+  background: radial-gradient(circle, rgba(34, 197, 94, 0.15), transparent 70%);
+  top: 10%;
+  right: 10%;
+  border-radius: 50%;
+}
+
+.auth-branding::after {
+  content: '';
+  position: absolute;
+  width: 200px;
+  height: 200px;
+  background: radial-gradient(circle, rgba(34, 197, 94, 0.1), transparent 70%);
+  bottom: 15%;
+  left: 15%;
+  border-radius: 50%;
+}
+
+.auth-branding__inner {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  max-width: 400px;
+}
+
+.auth-branding__icon {
+  font-size: 64px;
+  margin-bottom: 1.5rem;
+}
+
+.auth-branding__title {
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: white;
+  line-height: 1.1;
+  margin: 0 0 1rem;
+}
+
+.auth-branding__desc {
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 15px;
+  line-height: 1.6;
+  margin-bottom: 2rem;
+}
+
+.auth-branding__stats {
+  display: flex;
+  gap: 2rem;
+  justify-content: center;
+}
+
+.auth-branding__stat {
+  text-align: center;
+}
+
+.auth-branding__stat-value {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: #22c55e;
+}
+
+.auth-branding__stat-label {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.4);
+  margin-top: 2px;
+}
+
+.auth-branding__features {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  text-align: left;
+}
+
+.auth-branding__feature {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 14px;
+  font-weight: 500;
+}
+
+/* ==============================
+   404 Not Found Page
+   ============================== */
+.notfound-visual {
+  position: relative;
+  margin-bottom: 2rem;
+}
+
+.notfound-bg {
+  font-size: clamp(120px, 20vw, 200px);
+  font-weight: 900;
+  color: rgba(34, 197, 94, 0.1);
+  line-height: 1;
+  user-select: none;
+  display: block;
+}
+
+.notfound-icon {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 56px;
+  animation: notfound-bounce 2s ease-in-out infinite;
+}
+
+@keyframes notfound-bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-16px); }
+}
+
+.notfound-title {
+  font-size: 2rem;
+  font-weight: 800;
+  color: #0f172a;
+  margin: 0 0 0.75rem;
+}
+
+.notfound-desc {
+  color: #64748b;
+  font-size: 15px;
+  line-height: 1.6;
+  margin-bottom: 2rem;
+}
+
+.notfound-actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+/* Responsive for auth pages */
+@media (max-width: 900px) {
+  .auth-branding {
+    display: none;
+  }
+
+  .auth-page {
+    background: white;
+  }
+
+  .auth-divider span {
+    background: white;
+  }
+}

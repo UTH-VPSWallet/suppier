@@ -1,0 +1,58 @@
+<aside class="crm-sidebar">
+  <!-- Logo -->
+  <div class="crm-sidebar__logo">
+    <div class="crm-sidebar__logo-icon">VW</div>
+    <div>
+      <div class="crm-logo-text">VPS Wallet</div>
+      <div class="crm-logo-sub">CRM System</div>
+    </div>
+  </div>
+
+  <!-- Nav -->
+  <nav class="crm-sidebar__nav">
+    <div class="crm-nav-section">
+      <span class="crm-nav-section__label">Tổng quan</span>
+      @for (item of mainItems; track item.route) {
+        <a
+          [routerLink]="item.route"
+          routerLinkActive="active"
+          class="crm-nav-item"
+        >
+          <span style="font-size: 18px; width: 22px; text-align: center;">{{ item.icon }}</span>
+          <span>{{ item.label }}</span>
+          @if (item.badge) {
+            <span class="nav-badge">{{ item.badge }}</span>
+          }
+        </a>
+      }
+    </div>
+
+    <div class="crm-nav-section">
+      <span class="crm-nav-section__label">Quản lý</span>
+      @for (item of manageItems; track item.route) {
+        <a
+          [routerLink]="item.route"
+          routerLinkActive="active"
+          class="crm-nav-item"
+        >
+          <span style="font-size: 18px; width: 22px; text-align: center;">{{ item.icon }}</span>
+          <span>{{ item.label }}</span>
+          @if (item.badge) {
+            <span class="nav-badge">{{ item.badge }}</span>
+          }
+        </a>
+      }
+    </div>
+  </nav>
+
+  <!-- Bottom user info -->
+  <div style="padding: 1rem 1.25rem; border-top: 1px solid rgba(255,255,255,0.08);">
+    <div style="display: flex; align-items: center; gap: 0.75rem;">
+      <div class="crm-avatar" style="width: 36px; height: 36px; font-size: 13px;">AD</div>
+      <div>
+        <div style="color: white; font-size: 13px; font-weight: 600;">Admin VPS</div>
+        <div style="color: rgba(255,255,255,0.4); font-size: 11px;">admin&#64;vpswallet.vn</div>
+      </div>
+    </div>
+  </div>
+</aside>

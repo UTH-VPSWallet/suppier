@@ -1,0 +1,59 @@
+<div>
+  <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.25rem; flex-wrap: wrap; gap: 0.75rem;">
+    <div>
+      <h1 style="font-size: 1.1rem; font-weight: 700; color: #0f172a;">🏢 Quản Lý Nhà Cung Cấp</h1>
+      <p style="font-size: 13px; color: #64748b; margin-top: 2px;">{{ providers.length }} nhà cung cấp</p>
+    </div>
+    <button style="background: #22c55e; color: white; border: none; padding: 0.6rem 1.2rem; border-radius: 10px; font-size: 13px; font-weight: 600; cursor: pointer;">
+      + Thêm Nhà Cung Cấp
+    </button>
+  </div>
+
+  <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 1rem;">
+    @for (p of providers; track p.id) {
+      <div class="crm-table-card" style="padding: 1.25rem;">
+        <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem;">
+          <div style="width: 50px; height: 50px; background: linear-gradient(135deg, #dcfce7, #bbf7d0); border-radius: 14px; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 14px; color: #15803d; flex-shrink: 0;">
+            {{ p.name.slice(0, 2).toUpperCase() }}
+          </div>
+          <div style="flex: 1;">
+            <div style="font-weight: 700; color: #1e293b; font-size: 15px;">{{ p.name }}</div>
+            <div style="display: flex; align-items: center; gap: 0.5rem; margin-top: 3px;">
+              <span style="color: #f59e0b; font-size: 13px;">★★★★☆</span>
+              <span style="font-size: 12px; color: #64748b;">{{ p.rating }}/5</span>
+              <span style="font-size: 11px; color: #94a3b8;">·</span>
+              <span style="font-size: 11px; color: #64748b;">📍 {{ p.location }}</span>
+            </div>
+          </div>
+          <span class="status-badge" [class]="p.status === 'active' ? 'status-active' : 'status-expired'">
+            {{ p.status === 'active' ? 'Hoạt động' : 'Tạm dừng' }}
+          </span>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0.5rem; text-align: center; border-top: 1px solid #f1f5f9; padding-top: 1rem; margin-bottom: 1rem;">
+          <div>
+            <div style="font-size: 18px; font-weight: 700; color: #1e293b;">{{ p.products }}</div>
+            <div style="font-size: 11px; color: #94a3b8;">Gói VPS</div>
+          </div>
+          <div>
+            <div style="font-size: 18px; font-weight: 700; color: #1e293b;">{{ p.activeVps }}</div>
+            <div style="font-size: 11px; color: #94a3b8;">VPS đang chạy</div>
+          </div>
+          <div>
+            <div style="font-size: 15px; font-weight: 700; color: #15803d;">{{ (p.revenue / 1000000).toFixed(1) }}M</div>
+            <div style="font-size: 11px; color: #94a3b8;">Doanh thu</div>
+          </div>
+        </div>
+
+        <div style="display: flex; gap: 0.5rem;">
+          <button style="flex: 1; background: #f1f5f9; border: none; border-radius: 8px; padding: 7px; font-size: 12px; cursor: pointer; color: #374151; font-weight: 500;">
+            ✏️ Chỉnh sửa
+          </button>
+          <button style="flex: 1; background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 8px; padding: 7px; font-size: 12px; cursor: pointer; color: #15803d; font-weight: 500;">
+            📦 Xem sản phẩm
+          </button>
+        </div>
+      </div>
+    }
+  </div>
+</div>

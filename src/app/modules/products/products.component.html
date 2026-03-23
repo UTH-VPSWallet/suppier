@@ -1,0 +1,53 @@
+<div>
+  <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.25rem; flex-wrap: wrap; gap: 0.75rem;">
+    <div>
+      <h1 style="font-size: 1.1rem; font-weight: 700; color: #0f172a;">🖥️ Quản Lý VPS / Sản Phẩm</h1>
+      <p style="font-size: 13px; color: #64748b; margin-top: 2px;">{{ products.length }} gói VPS</p>
+    </div>
+    <button style="background: #22c55e; color: white; border: none; padding: 0.6rem 1.2rem; border-radius: 10px; font-size: 13px; font-weight: 600; cursor: pointer;">
+      + Thêm Gói VPS
+    </button>
+  </div>
+
+  <div style="display: flex; gap: 0.75rem; margin-bottom: 1rem;">
+    <input [(ngModel)]="search" type="text" placeholder="🔍 Tìm kiếm sản phẩm..."
+      style="flex: 1; min-width: 200px; border: 1px solid #e2e8f0; border-radius: 10px; padding: 0.5rem 1rem; font-size: 13px; outline: none;" />
+  </div>
+
+  <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1rem;">
+    @for (p of filtered; track p.id) {
+      <div class="crm-stat-card" style="flex-direction: column; align-items: stretch; padding: 1.25rem;">
+        <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.75rem;">
+          <div>
+            <div style="font-weight: 700; color: #1e293b; font-size: 14px;">{{ p.name }}</div>
+            <div style="font-size: 12px; color: #64748b; margin-top: 2px;">{{ p.provider }}</div>
+          </div>
+          <div style="display: flex; gap: 0.5rem; align-items: center;">
+            <span [style.background]="p.active ? '#dcfce7' : '#f1f5f9'" [style.color]="p.active ? '#15803d' : '#64748b'"
+              style="font-size: 11px; font-weight: 600; padding: 3px 8px; border-radius: 99px;">
+              {{ p.active ? '✅ Đang bán' : '⏸️ Tạm dừng' }}
+            </span>
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; font-size: 12px; color: #374151; margin-bottom: 0.75rem;">
+          <span>⚙️ {{ p.cpu }}</span>
+          <span>🧠 {{ p.ram }} RAM</span>
+          <span>💾 {{ p.storage }}</span>
+          <span>📍 {{ p.location === 'HN' ? 'Hà Nội' : p.location === 'SG' ? 'TP.HCM' : 'Đà Nẵng' }}</span>
+        </div>
+
+        <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #f1f5f9; padding-top: 0.75rem;">
+          <div>
+            <div style="font-size: 15px; font-weight: 800; color: #15803d;">{{ p.price.toLocaleString('vi-VN') }}₫<span style="font-size: 11px; color: #94a3b8; font-weight: 400;">/tháng</span></div>
+            <div style="font-size: 11px; color: #94a3b8;">{{ p.sold }} đơn đã bán</div>
+          </div>
+          <div style="display: flex; gap: 0.5rem;">
+            <button style="background: #f1f5f9; border: none; border-radius: 8px; padding: 5px 10px; font-size: 12px; cursor: pointer;">✏️</button>
+            <button style="background: #fee2e2; border: none; border-radius: 8px; padding: 5px 10px; font-size: 12px; cursor: pointer;">🗑️</button>
+          </div>
+        </div>
+      </div>
+    }
+  </div>
+</div>
