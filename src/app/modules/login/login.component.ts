@@ -1,5 +1,6 @@
 import { Component } from "@angular/core";
-
+import { AuthService } from "../../services/auth.service";
+import { LoginReq } from "../../models/auth.model";
 
 @Component({
   selector: 'login',
@@ -10,11 +11,23 @@ import { Component } from "@angular/core";
 })
 
 export class LoginComponent {
+
   showPassword = false;
 
-  onSubmit(e: Event) {
+   constructor(
+    private authService: AuthService,
+  ) {}
+
+  async onSubmit(e: Event) {
     e.preventDefault();
     // Navigate to dashboard (demo)
-    window.location.href = '/dashboard';
+    //window.location.href = '/dashboard';
+    const req: LoginReq = {
+      email: 'nhanhoa@gmail.com',
+      pass: '1111'
+    }
+    const res = await this.authService.login(req);
+    console.log("res", res);
+
   }
 }
