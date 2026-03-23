@@ -9,15 +9,15 @@ import { HttpStatusCode } from "@angular/common/http";
 export class AuthService extends ApiService {
 
     async login(req: LoginReq) {
-    const url = API_ENDPOINTS.SUPPLIER.CONTROLLER + API_ENDPOINTS.SUPPLIER.LOGIN;
-    try {
-      const resData = await lastValueFrom(this.post<LoginRes, LoginReq>(url, req));
-      if (resData && resData.status === HttpStatusCode.Ok) {
-        if(resData.result) return resData;  
-      }
-      return null;
-    } catch (err) {
-      return err;
+        const url = API_ENDPOINTS.SUPPLIER.CONTROLLER + API_ENDPOINTS.SUPPLIER.LOGIN;
+        console.log("req", req)
+        try {
+            const resData = await lastValueFrom(this.post<LoginRes>(url, req));
+            if (resData && resData.status === HttpStatusCode.Ok) {
+                if(resData.result) return resData;  
+            }
+            return null;
+        } 
+        catch (err) { return err }
     }
-  }
 }
