@@ -1,8 +1,105 @@
 <header class="crm-topbar">
   <div class="crm-topbar__title">{{ pageTitle }}</div>
+
   <div class="crm-topbar__actions">
-    <button class="crm-icon-btn" title="Thông báo">🔔</button>
+
+    <!-- Notification bell -->
+    <div class="tb-dropdown-wrap">
+      <button class="crm-icon-btn tb-notif-btn" title="Thông báo" (click)="toggleNotif()">
+        🔔
+        @if (unreadCount > 0) {
+          <span class="tb-badge">{{ unreadCount }}</span>
+        }
+      </button>
+
+      @if (showNotif) {
+        <div class="tb-dropdown tb-notif-panel" (click)="$event.stopPropagation()">
+          <div class="tb-dropdown__header">
+            <span class="tb-dropdown__header-title">Thông Báo</span>
+            <button class="tb-mark-all" (click)="markAllRead()">Đánh dấu đã đọc</button>
+          </div>
+          <div class="tb-notif-list">
+            @for (n of notifications; track n.id) {
+              <div class="tb-notif-item" [class.unread]="!n.read" (click)="readNotif(n)">
+                <div class="tb-notif-icon" [style.background]="n.color + '22'" [style.color]="n.color">
+                  {{ n.icon }}
+                </div>
+                <div class="tb-notif-body">
+                  <div class="tb-notif-msg">{{ n.message }}</div>
+                  <div class="tb-notif-time">{{ n.time }}</div>
+                </div>
+                @if (!n.read) {
+                  <span class="tb-notif-dot"></span>
+                }
+              </div>
+            }
+          </div>
+          <div class="tb-dropdown__footer">
+            <a class="tb-view-all" href="#">Xem tất cả thông báo →</a>
+          </div>
+        </div>
+      }
+    </div>
+
+    <!-- Settings -->
     <button class="crm-icon-btn" title="Cài đặt">⚙️</button>
-    <div class="crm-avatar" title="Admin VPS Wallet">AD</div>
+
+    <!-- Avatar + Profile dropdown -->
+    <div class="tb-dropdown-wrap">
+      <div class="crm-avatar tb-avatar-btn" title="Admin VPS Wallet" (click)="toggleProfile()">
+        AD
+      </div>
+
+      @if (showProfile) {
+        <div class="tb-dropdown tb-profile-panel" (click)="$event.stopPropagation()">
+          <!-- User info -->
+          <div class="tb-profile__top">
+            <div class="crm-avatar tb-profile__avatar">AD</div>
+            <div>
+              <div class="tb-profile__name">Admin VPS Wallet</div>
+              <div class="tb-profile__email">admin&#64;vpswallet.vn</div>
+              <span class="tb-profile__role">Super Admin</span>
+            </div>
+          </div>
+
+          <div class="tb-divider"></div>
+
+          <!-- Quick actions -->
+          <div class="tb-profile__menu">
+            <button class="tb-menu-item" (click)="closeAll()">
+              <span class="tb-menu-icon">👤</span> Hồ sơ cá nhân
+            </button>
+            <button class="tb-menu-item" (click)="closeAll()">
+              <span class="tb-menu-icon">⚙️</span> Cài đặt tài khoản
+            </button>
+            <button class="tb-menu-item" (click)="closeAll()">
+              <span class="tb-menu-icon">🔐</span> Đổi mật khẩu
+            </button>
+            <button class="tb-menu-item" (click)="closeAll()">
+              <span class="tb-menu-icon">🌙</span> Giao diện tối
+              <label class="tb-toggle" (click)="$event.stopPropagation()">
+                <input type="checkbox" [(ngModel)]="darkMode" />
+                <span class="tb-toggle__track"></span>
+              </label>
+            </button>
+          </div>
+
+          <div class="tb-divider"></div>
+
+          <!-- Logout -->
+          <div class="tb-profile__footer">
+            <button class="tb-logout-btn" (click)="logout()">
+              <span>🚪</span> Đăng Xuất
+            </button>
+          </div>
+        </div>
+      }
+    </div>
+
   </div>
 </header>
+
+<!-- Click outside to close -->
+@if (showNotif || showProfile) {
+  <div class="tb-overlay" (click)="closeAll()"></div>
+}
