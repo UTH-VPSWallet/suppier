@@ -1,22 +1,22 @@
-import { Injectable } from "@angular/core";
-import { ApiService } from "./api.service";
-import { API_ENDPOINTS } from "../constants/api-endpoints";
-import { LoginReq, LoginRes } from "../models/auth.model";
-import { lastValueFrom } from "rxjs";
 import { HttpStatusCode } from "@angular/common/http";
+import { Injectable } from "@angular/core";
+import { lastValueFrom } from "rxjs";
+import { API_ENDPOINTS } from "../constants/api-endpoints";
+import { GetBySupplierRes } from "../models/category.model";
+import { ApiService } from "./api.service";
 
 @Injectable({ providedIn: 'root' })
-export class AuthService extends ApiService {
+export class CategoryService extends ApiService {
 
-    async login(req: LoginReq) {
+    async GetAll(req: string) {
         const url = API_ENDPOINTS.SUPPLIER.CONTROLLER + API_ENDPOINTS.SUPPLIER.LOGIN;
         try {
-            const resData = await lastValueFrom(this.post<LoginRes>(url, req));
+            const resData = await lastValueFrom(this.post<GetBySupplierRes>(url, req));
             if (resData && resData.status === HttpStatusCode.Ok) {
-                if(resData.result) return resData;  
+                if(resData.result) return resData;
             }
             return null;
-        } 
+        }
         catch (err) { return err }
     }
 }

@@ -21,6 +21,7 @@ export const API_ENDPOINTS =  {
   SUPPLIER: {
     CONTROLLER: API_URL  + "supplier/",
     LOGIN: 'login',
+    GET_ALL: '/supplier/get-categories'
   },
 }
 

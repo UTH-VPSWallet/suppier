@@ -1,6 +1,6 @@
-import { CurrencyPipe } from "@angular/common";
 import { Component } from "@angular/core";
 import { FormsModule } from "@angular/forms";
+import { CategoryService } from "../../services/category.service";
 
 
 @Component({
@@ -11,7 +11,7 @@ import { FormsModule } from "@angular/forms";
   styleUrls: ['./products.component.scss']
 })
 
-export class ProductsComponent {
+export class ProductsComponent  {
   search = '';
 
   products: Product[] = [
@@ -26,4 +26,15 @@ export class ProductsComponent {
   get filtered() {
     return this.products.filter(p => !this.search || p.name.toLowerCase().includes(this.search.toLowerCase()) || p.provider.toLowerCase().includes(this.search.toLowerCase()));
   }
+
+  constructor(
+      private categoryService: CategoryService,
+    ) {}
+    async ngOnInit(): Promise<void> {
+
+      const res = await this.categoryService.GetAll(
+        'nhanhoa@gmail.com'
+      );
+      console.log("res", res);
+    }
 }
