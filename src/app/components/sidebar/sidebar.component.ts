@@ -19,6 +19,7 @@ export class SidebarComponent {
     { label: 'VPS / Sản Phẩm', icon: '🖥️', route: '/products' },
     { label: 'Khách Hàng', icon: '👥', route: '/customers' },
     { label: 'Nhà Cung Cấp', icon: '🏢', route: '/providers' },
+    { label: 'Thư Mục', icon: '📁', route: '/folders' },
   ];
 
 }

@@ -37,6 +37,11 @@ export const routes: Routes = [
     path: 'providers',
     loadComponent: () => import('./modules/providers/providers.component').then(m => m.ProvidersComponent),
   },
+  {
+    path: 'folders',
+    loadComponent: () => import('./modules/folders/folders.component').then(m => m.FoldersComponent),
+  },
+
   // 404
   {
     path: '**',
