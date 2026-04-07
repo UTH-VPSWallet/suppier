@@ -1,7 +1,11 @@
-import { Component } from "@angular/core";
+import { ChangeDetectorRef, Component } from "@angular/core";
 import { AuthService } from "../../services/auth.service";
-import { LoginReq } from "../../models/auth.model";
+import { LoginReq, LoginRes } from "../../models/auth.model";
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from "@angular/forms";
+import { ResData } from "../../models/res.dto";
+import { HttpStatusCode } from "@angular/common/http";
+import { Router } from "@angular/router";
+import { LOCALSTORAGE } from "../../constants/text.constant";
 
 @Component({
   selector: 'login',
@@ -18,19 +22,28 @@ export class LoginComponent {
     Email: new FormControl(''),
     Pass: new FormControl(''),
   });
+  loginErr = '';
 
    constructor(
     private authService: AuthService,
+     private router: Router,
+     private cdr: ChangeDetectorRef,
   ) {}
 
-  async onSubmit(e: Event) {
-    e.preventDefault();
-    // Navigate to dashboard (demo)
-    //window.location.href = '/dashboard';
+  async onSubmit() {
+    this.loginErr = '';
     const loginReq: LoginReq = {
       Email: this.loginForm.value.Email ?? '',
       Pass: this.loginForm.value.Pass ?? ''
     }
-    const res = await this.authService.login(loginReq);
+    const res: any = await this.authService.login(loginReq);
+    if(res.result.Status != HttpStatusCode.Ok){
+      this.loginErr = res.result.Message;
+      this.cdr.detectChanges();
+    }
+    else{
+      localStorage.setItem(LOCALSTORAGE.AUTH, JSON.stringify(res.result.Data));
+      this.router.navigate(['/dashboard']);
+    }
   }
 }

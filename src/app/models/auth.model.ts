@@ -3,6 +3,6 @@ export interface LoginReq {
     Pass: string;
 }
 export interface LoginRes {
-    name: string;
-    token: string;
+    Name: string;
+    Token: string;
 }

@@ -1,4 +1,3 @@
-
 import { environment } from "../environments/environment";
 
 export const HTTP_STATUS = {
@@ -16,7 +15,6 @@ export const HTTP_STATUS = {
 
 export const API_URL = environment.API_URL;
 
-
 export const API_ENDPOINTS =  {
   SUPPLIER: {
     CONTROLLER: API_URL  + "supplier/",
@@ -24,5 +22,3 @@ export const API_ENDPOINTS =  {
     GET_ALL: '/supplier/get-categories'
   },
 }
-
-
