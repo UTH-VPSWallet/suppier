@@ -8,12 +8,12 @@
     </div>
 
     <!-- Form -->
-    <form class="auth-form" (submit)="onSubmit($event)">
+    <form class="auth-form" [formGroup]="loginForm" (submit)="onSubmit($event)">
       <div class="auth-field">
         <label class="auth-label">Email</label>
         <div class="auth-input-wrap">
           <span class="auth-input-icon">📧</span>
-          <input type="email" placeholder="admin@vpswallet.vn" class="auth-input" />
+          <input type="email" placeholder="admin@vpswallet.vn" class="auth-input" formControlName="Email" />
         </div>
       </div>
 
@@ -24,7 +24,7 @@
         </div>
         <div class="auth-input-wrap">
           <span class="auth-input-icon">🔒</span>
-          <input [type]="showPassword ? 'text' : 'password'" placeholder="••••••••" class="auth-input" />
+          <input [type]="showPassword ? 'text' : 'password'" placeholder="••••••••" class="auth-input" formControlName="Pass" />
           <button type="button" class="auth-toggle-pw" (click)="showPassword = !showPassword">
             {{ showPassword ? '🙈' : '👁️' }}
           </button>

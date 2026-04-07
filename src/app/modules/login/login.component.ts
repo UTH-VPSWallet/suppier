@@ -1,11 +1,12 @@
 import { Component } from "@angular/core";
 import { AuthService } from "../../services/auth.service";
 import { LoginReq } from "../../models/auth.model";
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from "@angular/forms";
 
 @Component({
   selector: 'login',
   standalone: true,
-  imports: [],
+  imports: [FormsModule, ReactiveFormsModule],
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss']
 })
@@ -13,6 +14,10 @@ import { LoginReq } from "../../models/auth.model";
 export class LoginComponent {
 
   showPassword = false;
+  loginForm = new FormGroup({
+    Email: new FormControl(''),
+    Pass: new FormControl(''),
+  });
 
    constructor(
     private authService: AuthService,
@@ -22,12 +27,10 @@ export class LoginComponent {
     e.preventDefault();
     // Navigate to dashboard (demo)
     //window.location.href = '/dashboard';
-    const req: LoginReq = {
-      Email: 'nhanhoa@gmail.com',
-      Pass: '1111'
+    const loginReq: LoginReq = {
+      Email: this.loginForm.value.Email ?? '',
+      Pass: this.loginForm.value.Pass ?? ''
     }
-    const res = await this.authService.login(req);
-    console.log("res", res);
-
+    const res = await this.authService.login(loginReq);
   }
 }
