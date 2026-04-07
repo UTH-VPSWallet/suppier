@@ -23,8 +23,8 @@ export class LoginComponent {
     // Navigate to dashboard (demo)
     //window.location.href = '/dashboard';
     const req: LoginReq = {
-      email: 'nhanhoa@gmail.com',
-      pass: '1111'
+      Email: 'nhanhoa@gmail.com',
+      Pass: '1111'
     }
     const res = await this.authService.login(req);
     console.log("res", res);

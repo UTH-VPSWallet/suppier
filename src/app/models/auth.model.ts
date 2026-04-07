@@ -1,6 +1,6 @@
 export interface LoginReq {
-    email: string;
-    pass: string;
+    Email: string;
+    Pass: string;
 }
 export interface LoginRes {
     name: string;
