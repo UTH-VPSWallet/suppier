@@ -30,6 +30,10 @@ export class LoginComponent {
      private cdr: ChangeDetectorRef,
   ) {}
 
+  ngOnInit(){
+    localStorage.clear();
+  }
+
   async onSubmit() {
     this.loginErr = '';
     const loginReq: LoginReq = {

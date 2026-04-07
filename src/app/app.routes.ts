@@ -1,5 +1,7 @@
-import { Routes } from '@angular/router';
+import { mapToCanActivate, Routes } from '@angular/router';
 import { MainLayoutComponent } from './layouts/main-layout/main-layout.component';
+import { AuthGuard } from './services/auth.guard';
+import { DashboardComponent } from './modules/dashboard/dashboard.component';
 
 export const routes: Routes = [
   // Auth pages (no sidebar/topbar)
@@ -22,10 +24,7 @@ export const routes: Routes = [
     component: MainLayoutComponent,
     children: [
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
-      {
-        path: 'dashboard',
-        loadComponent: () => import('./modules/dashboard/dashboard.component').then(m => m.DashboardComponent),
-      },
+      { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard] },
       {
         path: 'orders',
         loadComponent: () => import('./modules/orders/orders.component').then(m => m.OrdersComponent),

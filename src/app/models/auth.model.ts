@@ -6,3 +6,7 @@ export interface LoginRes {
     Name: string;
     Token: string;
 }
+export interface LoginStorage {
+  Name: string;
+  Token: string;
+}
