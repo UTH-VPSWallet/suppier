@@ -13,6 +13,26 @@ import { CategoryService } from "../../services/category.service";
 
 export class ProductsComponent  {
   search = '';
+  showModal = false;
+  showDeleteConfirm = false;
+  isEditing = false;
+  deleteTargetId = '';
+  deleteTargetName = '';
+
+  // Toast notification
+  toast: { message: string; type: 'success' | 'error' | 'info' } | null = null;
+  private toastTimer: any;
+
+  // Available providers and locations for the form
+  providerOptions = ['Nhân Hòa', 'VNPT Cloud', 'Viettel IDC', 'FPT Telecom', 'VinaHost', 'PA Vietnam'];
+  locationOptions = [
+    { value: 'HN', label: 'Hà Nội' },
+    { value: 'SG', label: 'TP.HCM' },
+    { value: 'DN', label: 'Đà Nẵng' },
+  ];
+
+  // Form model
+  formData: Product = this.getEmptyProduct();
 
   products: Product[] = [
     { id: 'v1', name: 'SSD Cloud VPS A', provider: 'Nhân Hòa', cpu: '3 Core Xeon', ram: '2GB', storage: '20GB SSD', price: 150000, active: true, sold: 82, location: 'HN' },
@@ -37,4 +57,108 @@ export class ProductsComponent  {
       );
       console.log("res", res);
     }
+
+  getEmptyProduct(): Product {
+    return {
+      id: '',
+      name: '',
+      provider: '',
+      cpu: '',
+      ram: '',
+      storage: '',
+      price: 0,
+      active: true,
+      sold: 0,
+      location: 'HN',
+    };
+  }
+
+  // Open add modal
+  openAddModal() {
+    this.isEditing = false;
+    this.formData = this.getEmptyProduct();
+    this.formData.id = 'v' + (Date.now().toString(36));
+    this.showModal = true;
+  }
+
+  // Open edit modal
+  openEditModal(product: Product) {
+    this.isEditing = true;
+    this.formData = { ...product };
+    this.showModal = true;
+  }
+
+  // Close modal
+  closeModal() {
+    this.showModal = false;
+  }
+
+  // Save (add or edit)
+  saveProduct() {
+    if (!this.formData.name.trim() || !this.formData.provider || !this.formData.cpu.trim()) {
+      this.showToast('Vui lòng điền đầy đủ các trường bắt buộc!', 'error');
+      return;
+    }
+
+    if (this.isEditing) {
+      const idx = this.products.findIndex(p => p.id === this.formData.id);
+      if (idx !== -1) {
+        this.products[idx] = { ...this.formData };
+        this.showToast(`Đã cập nhật gói VPS "${this.formData.name}" thành công!`, 'success');
+      }
+    } else {
+      this.products.unshift({ ...this.formData });
+      this.showToast(`Đã thêm gói VPS "${this.formData.name}" thành công!`, 'success');
+    }
+    this.closeModal();
+  }
+
+  // Open delete confirmation
+  openDeleteConfirm(product: Product) {
+    this.deleteTargetId = product.id;
+    this.deleteTargetName = product.name;
+    this.showDeleteConfirm = true;
+  }
+
+  // Close delete confirmation
+  closeDeleteConfirm() {
+    this.showDeleteConfirm = false;
+    this.deleteTargetId = '';
+    this.deleteTargetName = '';
+  }
+
+  // Confirm delete
+  confirmDelete() {
+    this.products = this.products.filter(p => p.id !== this.deleteTargetId);
+    this.showToast(`Đã xóa gói VPS "${this.deleteTargetName}" thành công!`, 'success');
+    this.closeDeleteConfirm();
+  }
+
+  // Toggle active
+  toggleActive(product: Product) {
+    product.active = !product.active;
+    const status = product.active ? 'kích hoạt' : 'tạm dừng';
+    this.showToast(`Đã ${status} gói VPS "${product.name}"`, 'info');
+  }
+
+  // Toast helper
+  showToast(message: string, type: 'success' | 'error' | 'info') {
+    if (this.toastTimer) clearTimeout(this.toastTimer);
+    this.toast = { message, type };
+    this.toastTimer = setTimeout(() => {
+      this.toast = null;
+    }, 3000);
+  }
+
+  // Form validation
+  get isFormValid(): boolean {
+    return !!(
+      this.formData.name.trim() &&
+      this.formData.provider &&
+      this.formData.cpu.trim() &&
+      this.formData.ram.trim() &&
+      this.formData.storage.trim() &&
+      this.formData.price > 0
+    );
+  }
 }

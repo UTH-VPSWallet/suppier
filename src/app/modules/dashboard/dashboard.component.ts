@@ -1,5 +1,5 @@
-import { Component } from "@angular/core";
 import { CurrencyPipe } from '@angular/common';
+import { Component } from "@angular/core";
 
 @Component({
   selector: 'dashboard',

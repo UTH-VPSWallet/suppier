@@ -1,53 +1,280 @@
-<div>
-  <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.25rem; flex-wrap: wrap; gap: 0.75rem;">
+<div class="vps-page">
+  <!-- Header -->
+  <div class="vps-page__header">
     <div>
-      <h1 style="font-size: 1.1rem; font-weight: 700; color: #0f172a;">🖥️ Quản Lý VPS / Sản Phẩm</h1>
-      <p style="font-size: 13px; color: #64748b; margin-top: 2px;">{{ products.length }} gói VPS</p>
+      <h1 class="vps-page__title">🖥️ Quản Lý VPS / Sản Phẩm</h1>
+      <p class="vps-page__sub">{{ products.length }} gói VPS · {{ products.filter(p => p.active).length }} đang hoạt động</p>
     </div>
-    <button style="background: #22c55e; color: white; border: none; padding: 0.6rem 1.2rem; border-radius: 10px; font-size: 13px; font-weight: 600; cursor: pointer;">
-      + Thêm Gói VPS
+    <button class="vps-btn-add" (click)="openAddModal()">
+      <span>+</span> Thêm Gói VPS
     </button>
   </div>
 
-  <div style="display: flex; gap: 0.75rem; margin-bottom: 1rem;">
-    <input [(ngModel)]="search" type="text" placeholder="🔍 Tìm kiếm sản phẩm..."
-      style="flex: 1; min-width: 200px; border: 1px solid #e2e8f0; border-radius: 10px; padding: 0.5rem 1rem; font-size: 13px; outline: none;" />
+  <!-- Toolbar -->
+  <div class="vps-toolbar">
+    <div class="vps-search-wrap">
+      <span class="vps-search-icon">🔍</span>
+      <input [(ngModel)]="search" type="text" placeholder="Tìm kiếm gói VPS, nhà cung cấp..."
+        class="vps-search-input" />
+    </div>
+    <div class="vps-stats-mini">
+      <div class="vps-stat-pill">
+        <span class="vps-stat-pill__icon">📦</span>
+        <span>{{ products.length }} gói</span>
+      </div>
+      <div class="vps-stat-pill vps-stat-pill--green">
+        <span class="vps-stat-pill__icon">✅</span>
+        <span>{{ products.filter(p => p.active).length }} đang bán</span>
+      </div>
+      <div class="vps-stat-pill vps-stat-pill--amber">
+        <span class="vps-stat-pill__icon">⏸️</span>
+        <span>{{ products.filter(p => !p.active).length }} tạm dừng</span>
+      </div>
+    </div>
   </div>
 
-  <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1rem;">
+  <!-- VPS Cards Grid -->
+  <div class="vps-grid">
     @for (p of filtered; track p.id) {
-      <div class="crm-stat-card" style="flex-direction: column; align-items: stretch; padding: 1.25rem;">
-        <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.75rem;">
-          <div>
-            <div style="font-weight: 700; color: #1e293b; font-size: 14px;">{{ p.name }}</div>
-            <div style="font-size: 12px; color: #64748b; margin-top: 2px;">{{ p.provider }}</div>
+      <div class="vps-card" [class.vps-card--inactive]="!p.active">
+        <!-- Card Header -->
+        <div class="vps-card__header">
+          <div class="vps-card__avatar" [class.vps-card__avatar--inactive]="!p.active">
+            🖥️
           </div>
-          <div style="display: flex; gap: 0.5rem; align-items: center;">
-            <span [style.background]="p.active ? '#dcfce7' : '#f1f5f9'" [style.color]="p.active ? '#15803d' : '#64748b'"
-              style="font-size: 11px; font-weight: 600; padding: 3px 8px; border-radius: 99px;">
-              {{ p.active ? '✅ Đang bán' : '⏸️ Tạm dừng' }}
-            </span>
+          <div class="vps-card__title-wrap">
+            <div class="vps-card__name">{{ p.name }}</div>
+            <div class="vps-card__provider">{{ p.provider }}</div>
+          </div>
+          <div class="vps-card__status-wrap">
+            <button class="vps-status-toggle" [class.active]="p.active" (click)="toggleActive(p)" [title]="p.active ? 'Nhấn để tạm dừng' : 'Nhấn để kích hoạt'">
+              <span class="vps-status-toggle__dot"></span>
+              <span class="vps-status-toggle__label">{{ p.active ? 'Đang bán' : 'Tạm dừng' }}</span>
+            </button>
           </div>
         </div>
 
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; font-size: 12px; color: #374151; margin-bottom: 0.75rem;">
-          <span>⚙️ {{ p.cpu }}</span>
-          <span>🧠 {{ p.ram }} RAM</span>
-          <span>💾 {{ p.storage }}</span>
-          <span>📍 {{ p.location === 'HN' ? 'Hà Nội' : p.location === 'SG' ? 'TP.HCM' : 'Đà Nẵng' }}</span>
+        <!-- Specs Grid -->
+        <div class="vps-card__specs">
+          <div class="vps-spec">
+            <span class="vps-spec__icon">⚙️</span>
+            <div>
+              <div class="vps-spec__label">CPU</div>
+              <div class="vps-spec__value">{{ p.cpu }}</div>
+            </div>
+          </div>
+          <div class="vps-spec">
+            <span class="vps-spec__icon">🧠</span>
+            <div>
+              <div class="vps-spec__label">RAM</div>
+              <div class="vps-spec__value">{{ p.ram }}</div>
+            </div>
+          </div>
+          <div class="vps-spec">
+            <span class="vps-spec__icon">💾</span>
+            <div>
+              <div class="vps-spec__label">Lưu trữ</div>
+              <div class="vps-spec__value">{{ p.storage }}</div>
+            </div>
+          </div>
+          <div class="vps-spec">
+            <span class="vps-spec__icon">📍</span>
+            <div>
+              <div class="vps-spec__label">Vị trí</div>
+              <div class="vps-spec__value">{{ p.location === 'HN' ? 'Hà Nội' : p.location === 'SG' ? 'TP.HCM' : 'Đà Nẵng' }}</div>
+            </div>
+          </div>
         </div>
 
-        <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #f1f5f9; padding-top: 0.75rem;">
-          <div>
-            <div style="font-size: 15px; font-weight: 800; color: #15803d;">{{ p.price.toLocaleString('vi-VN') }}₫<span style="font-size: 11px; color: #94a3b8; font-weight: 400;">/tháng</span></div>
-            <div style="font-size: 11px; color: #94a3b8;">{{ p.sold }} đơn đã bán</div>
+        <!-- Footer -->
+        <div class="vps-card__footer">
+          <div class="vps-card__pricing">
+            <div class="vps-card__price">{{ p.price.toLocaleString('vi-VN') }}₫<span class="vps-card__price-sub">/tháng</span></div>
+            <div class="vps-card__sold">📊 {{ p.sold }} đơn đã bán</div>
           </div>
-          <div style="display: flex; gap: 0.5rem;">
-            <button style="background: #f1f5f9; border: none; border-radius: 8px; padding: 5px 10px; font-size: 12px; cursor: pointer;">✏️</button>
-            <button style="background: #fee2e2; border: none; border-radius: 8px; padding: 5px 10px; font-size: 12px; cursor: pointer;">🗑️</button>
+          <div class="vps-card__actions">
+            <button class="vps-action-btn vps-action-btn--edit" title="Chỉnh sửa" (click)="openEditModal(p)">
+              ✏️
+            </button>
+            <button class="vps-action-btn vps-action-btn--delete" title="Xóa" (click)="openDeleteConfirm(p)">
+              🗑️
+            </button>
           </div>
         </div>
       </div>
     }
   </div>
+
+  <!-- Empty state -->
+  @if (filtered.length === 0) {
+    <div class="vps-empty">
+      <div class="vps-empty__icon">🔍</div>
+      <div class="vps-empty__title">Không tìm thấy gói VPS nào</div>
+      <div class="vps-empty__sub">Thử tìm kiếm với từ khóa khác hoặc thêm gói VPS mới</div>
+      <button class="vps-btn-add" style="margin-top: 1rem;" (click)="openAddModal()">
+        <span>+</span> Thêm Gói VPS Mới
+      </button>
+    </div>
+  }
 </div>
+
+<!-- ============================================ -->
+<!-- Add/Edit Modal -->
+<!-- ============================================ -->
+@if (showModal) {
+  <div class="vps-modal-overlay" (click)="closeModal()">
+    <div class="vps-modal" (click)="$event.stopPropagation()">
+      <!-- Modal Header -->
+      <div class="vps-modal__header">
+        <div class="vps-modal__header-icon">{{ isEditing ? '✏️' : '➕' }}</div>
+        <div>
+          <h2 class="vps-modal__title">{{ isEditing ? 'Chỉnh Sửa Gói VPS' : 'Thêm Gói VPS Mới' }}</h2>
+          <p class="vps-modal__subtitle">{{ isEditing ? 'Cập nhật thông tin gói VPS' : 'Điền thông tin để tạo gói VPS mới' }}</p>
+        </div>
+        <button class="vps-modal__close" (click)="closeModal()">✕</button>
+      </div>
+
+      <!-- Modal Body -->
+      <div class="vps-modal__body">
+        <!-- Name & Provider row -->
+        <div class="vps-form-row">
+          <div class="vps-form-group">
+            <label class="vps-form-label">
+              Tên gói VPS <span class="required">*</span>
+            </label>
+            <input type="text" class="vps-form-input" [(ngModel)]="formData.name"
+              placeholder="VD: SSD Cloud VPS Pro" />
+          </div>
+          <div class="vps-form-group">
+            <label class="vps-form-label">
+              Nhà cung cấp <span class="required">*</span>
+            </label>
+            <select class="vps-form-select" [(ngModel)]="formData.provider">
+              <option value="" disabled>-- Chọn nhà cung cấp --</option>
+              @for (opt of providerOptions; track opt) {
+                <option [value]="opt">{{ opt }}</option>
+              }
+            </select>
+          </div>
+        </div>
+
+        <!-- CPU & RAM row -->
+        <div class="vps-form-row">
+          <div class="vps-form-group">
+            <label class="vps-form-label">
+              CPU <span class="required">*</span>
+            </label>
+            <input type="text" class="vps-form-input" [(ngModel)]="formData.cpu"
+              placeholder="VD: 4 Core Xeon E5" />
+          </div>
+          <div class="vps-form-group">
+            <label class="vps-form-label">
+              RAM <span class="required">*</span>
+            </label>
+            <input type="text" class="vps-form-input" [(ngModel)]="formData.ram"
+              placeholder="VD: 4GB" />
+          </div>
+        </div>
+
+        <!-- Storage & Location row -->
+        <div class="vps-form-row">
+          <div class="vps-form-group">
+            <label class="vps-form-label">
+              Lưu trữ <span class="required">*</span>
+            </label>
+            <input type="text" class="vps-form-input" [(ngModel)]="formData.storage"
+              placeholder="VD: 40GB SSD" />
+          </div>
+          <div class="vps-form-group">
+            <label class="vps-form-label">
+              Vị trí
+            </label>
+            <select class="vps-form-select" [(ngModel)]="formData.location">
+              @for (loc of locationOptions; track loc.value) {
+                <option [value]="loc.value">{{ loc.label }}</option>
+              }
+            </select>
+          </div>
+        </div>
+
+        <!-- Price & Status row -->
+        <div class="vps-form-row">
+          <div class="vps-form-group">
+            <label class="vps-form-label">
+              Giá (₫/tháng) <span class="required">*</span>
+            </label>
+            <div class="vps-form-price-wrap">
+              <input type="number" class="vps-form-input vps-form-input--price" [(ngModel)]="formData.price"
+                placeholder="150000" min="0" />
+              <span class="vps-form-price-suffix">₫</span>
+            </div>
+          </div>
+          <div class="vps-form-group">
+            <label class="vps-form-label">Trạng thái</label>
+            <div class="vps-form-status-toggle">
+              <label class="vps-toggle-switch">
+                <input type="checkbox" [(ngModel)]="formData.active" />
+                <span class="vps-toggle-slider"></span>
+              </label>
+              <span class="vps-form-status-text" [class.active]="formData.active">
+                {{ formData.active ? '✅ Đang bán' : '⏸️ Tạm dừng' }}
+              </span>
+            </div>
+          </div>
+        </div>
+
+        @if (isEditing) {
+          <div class="vps-form-row">
+            <div class="vps-form-group">
+              <label class="vps-form-label">Số đơn đã bán</label>
+              <input type="number" class="vps-form-input" [(ngModel)]="formData.sold"
+                placeholder="0" min="0" />
+            </div>
+            <div class="vps-form-group"></div>
+          </div>
+        }
+      </div>
+
+      <!-- Modal Footer -->
+      <div class="vps-modal__footer">
+        <button class="vps-btn-cancel" (click)="closeModal()">Hủy bỏ</button>
+        <button class="vps-btn-save" [disabled]="!isFormValid" (click)="saveProduct()">
+          {{ isEditing ? '💾 Lưu Thay Đổi' : '➕ Thêm Gói VPS' }}
+        </button>
+      </div>
+    </div>
+  </div>
+}
+
+<!-- ============================================ -->
+<!-- Delete Confirmation Modal -->
+<!-- ============================================ -->
+@if (showDeleteConfirm) {
+  <div class="vps-modal-overlay" (click)="closeDeleteConfirm()">
+    <div class="vps-delete-modal" (click)="$event.stopPropagation()">
+      <div class="vps-delete-modal__icon">⚠️</div>
+      <h3 class="vps-delete-modal__title">Xác Nhận Xóa</h3>
+      <p class="vps-delete-modal__desc">
+        Bạn có chắc chắn muốn xóa gói VPS <strong>"{{ deleteTargetName }}"</strong>?
+        <br/>Hành động này không thể hoàn tác.
+      </p>
+      <div class="vps-delete-modal__actions">
+        <button class="vps-btn-cancel" (click)="closeDeleteConfirm()">Không, giữ lại</button>
+        <button class="vps-btn-delete" (click)="confirmDelete()">🗑️ Xóa gói VPS</button>
+      </div>
+    </div>
+  </div>
+}
+
+<!-- ============================================ -->
+<!-- Toast Notification -->
+<!-- ============================================ -->
+@if (toast) {
+  <div class="vps-toast" [class]="'vps-toast--' + toast.type">
+    <span class="vps-toast__icon">
+      {{ toast.type === 'success' ? '✅' : toast.type === 'error' ? '❌' : 'ℹ️' }}
+    </span>
+    <span class="vps-toast__message">{{ toast.message }}</span>
+    <button class="vps-toast__close" (click)="toast = null">✕</button>
+  </div>
+}
