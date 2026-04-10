@@ -48,10 +48,10 @@
   <!-- Bottom user info -->
   <div style="padding: 1rem 1.25rem; border-top: 1px solid rgba(255,255,255,0.08);">
     <div style="display: flex; align-items: center; gap: 0.75rem;">
-      <div class="crm-avatar" style="width: 36px; height: 36px; font-size: 13px;">AD</div>
+      <div class="crm-avatar" style="width: 36px; height: 36px; font-size: 13px;">{{getShortName(auth.Name)}}</div>
       <div>
-        <div style="color: white; font-size: 13px; font-weight: 600;">Admin VPS</div>
-        <div style="color: rgba(255,255,255,0.4); font-size: 11px;">admin&#64;vpswallet.vn</div>
+        <div style="color: white; font-size: 13px; font-weight: 600;">{{auth.Name}}</div>
+        <div style="color: rgba(255,255,255,0.4); font-size: 11px;">{{auth.Email}}</div>
       </div>
     </div>
   </div>

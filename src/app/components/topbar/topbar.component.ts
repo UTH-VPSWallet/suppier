@@ -1,6 +1,8 @@
 import { Component, Input } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
+import { LOCALSTORAGE } from '../../constants/text.constant';
+import { LoginStorage } from '../../models/auth.model';
 
 interface Notification {
   id: number;
@@ -19,7 +21,10 @@ interface Notification {
   styleUrl: './topbar.component.scss',
 })
 export class TopbarComponent {
+  
   @Input() pageTitle = 'Dashboard';
+
+  auth: LoginStorage = { Email: '', Name: '', Token: '' };
 
   showNotif = false;
   showProfile = false;
@@ -38,6 +43,15 @@ export class TopbarComponent {
   }
 
   constructor(private router: Router) {}
+
+  ngOnInit(){
+    this.bindData();
+  }
+
+  bindData(){
+    const local = localStorage.getItem(LOCALSTORAGE.AUTH);
+    if(local) this.auth = JSON.parse(local);
+  }
 
   toggleNotif() {
     this.showNotif = !this.showNotif;
@@ -65,5 +79,10 @@ export class TopbarComponent {
   logout() {
     this.closeAll();
     this.router.navigate(['/login']);
+  }
+
+  getShortName(name: string): string {
+    if (!name) return '';
+    return name.split(' ').filter(word => word).map(word => word[0].toUpperCase()).join('');
   }
 }

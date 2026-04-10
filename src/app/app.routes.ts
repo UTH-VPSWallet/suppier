@@ -10,10 +10,6 @@ export const routes: Routes = [
     loadComponent: () => import('./modules/login/login.component').then(m => m.LoginComponent),
   },
   {
-    path: 'register',
-    loadComponent: () => import('./modules/register/register.component').then(m => m.RegisterComponent),
-  },
-  {
     path: 'forgot-password',
     loadComponent: () => import('./modules/forgot-password/forgot-password.component').then(m => m.ForgotPasswordComponent),
   },
@@ -32,19 +28,7 @@ export const routes: Routes = [
       {
         path: 'vps',
         loadComponent: () => import('./modules/vps/vps.component').then(m => m.VPSComponent),
-      },
-      {
-        path: 'customers',
-        loadComponent: () => import('./modules/customers/customers.component').then(m => m.CustomersComponent),
-      },
-      {
-        path: 'providers',
-        loadComponent: () => import('./modules/providers/providers.component').then(m => m.ProvidersComponent),
-      },
-      {
-        path: 'folders',
-        loadComponent: () => import('./modules/folders/folders.component').then(m => m.FoldersComponent),
-      },
+      }
     ],
   },
 

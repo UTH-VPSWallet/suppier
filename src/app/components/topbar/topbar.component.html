@@ -46,19 +46,19 @@
 
     <!-- Avatar + Profile dropdown -->
     <div class="tb-dropdown-wrap">
-      <div class="crm-avatar tb-avatar-btn" title="Admin VPS Wallet" (click)="toggleProfile()">
-        AD
+      <div class="crm-avatar tb-avatar-btn" (click)="toggleProfile()">
+        {{getShortName(auth.Name)}}
       </div>
 
       @if (showProfile) {
         <div class="tb-dropdown tb-profile-panel" (click)="$event.stopPropagation()">
           <!-- User info -->
           <div class="tb-profile__top">
-            <div class="crm-avatar tb-profile__avatar">AD</div>
+            <div class="crm-avatar tb-profile__avatar">{{getShortName(auth.Name)}}</div>
             <div>
-              <div class="tb-profile__name">Admin VPS Wallet</div>
-              <div class="tb-profile__email">admin&#64;vpswallet.vn</div>
-              <span class="tb-profile__role">Super Admin</span>
+              <div class="tb-profile__name">{{auth.Name}}</div>
+              <div class="tb-profile__email">{{auth.Email}}</div>
+              <span class="tb-profile__role">Supplier</span>
             </div>
           </div>
 
@@ -69,23 +69,8 @@
             <button class="tb-menu-item" (click)="closeAll()">
               <span class="tb-menu-icon">👤</span> Hồ sơ cá nhân
             </button>
-            <button class="tb-menu-item" (click)="closeAll()">
-              <span class="tb-menu-icon">⚙️</span> Cài đặt tài khoản
-            </button>
-            <button class="tb-menu-item" (click)="closeAll()">
-              <span class="tb-menu-icon">🔐</span> Đổi mật khẩu
-            </button>
-            <button class="tb-menu-item" (click)="closeAll()">
-              <span class="tb-menu-icon">🌙</span> Giao diện tối
-              <label class="tb-toggle" (click)="$event.stopPropagation()">
-                <input type="checkbox" [(ngModel)]="darkMode" />
-                <span class="tb-toggle__track"></span>
-              </label>
-            </button>
           </div>
-
           <div class="tb-divider"></div>
-
           <!-- Logout -->
           <div class="tb-profile__footer">
             <button class="tb-logout-btn" (click)="logout()">
@@ -98,8 +83,3 @@
 
   </div>
 </header>
-
-<!-- Click outside to close -->
-<!-- @if (showNotif || showProfile) {
-  <div class="tb-overlay" (click)="closeAll()"></div>
-} -->
