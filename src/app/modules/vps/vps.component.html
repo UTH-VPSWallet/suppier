@@ -3,7 +3,6 @@
   <div class="vps-page__header">
     <div>
       <h1 class="vps-page__title">🖥️ Quản Lý VPS</h1>
-      <!-- <p class="vps-page__sub">{{ products.length }} gói VPS · {{ products.filter(p => p.active).length }} đang hoạt động</p> -->
     </div>
     <button class="vps-btn-add" (click)="openAddModal()">
       <span>+</span> Thêm Gói VPS
@@ -46,8 +45,7 @@
             <div class="vps-card__name">{{ vps.Name }}</div>
           </div>
           <div class="vps-card__status-wrap">
-           <!-- <button class="vps-status-toggle" [class.active]="vps.Status" (click)="toggleActive(vps)" [title]="vps.Status ? 'Nhấn để tạm dừng' : 'Nhấn để kích hoạt'"> -->
-            <button class="vps-status-toggle" [class.active]="vps.Status" [title]="vps.Status ? 'Nhấn để tạm dừng' : 'Nhấn để kích hoạt'">
+            <button class="vps-status-toggle" [class.active]="vps.Status">
               <span class="vps-status-toggle__dot"></span>
               <span class="vps-status-toggle__label">{{ vps.Status ? 'Đang bán' : 'Tạm dừng' }}</span>
             </button>
@@ -88,9 +86,9 @@
             <button class="vps-action-btn vps-action-btn--edit" title="Chỉnh sửa" (click)="openEditModal(vps)">
               ✏️
             </button>
-            <!-- <button class="vps-action-btn vps-action-btn--delete" title="Xóa" (click)="openDeleteConfirm(p)">
+            <button class="vps-action-btn vps-action-btn--delete" title="Xóa" (click)="openDeleteConfirm(vps)">
               🗑️
-            </button> -->
+            </button>
           </div>
         </div>
       </div>

@@ -23,7 +23,8 @@ export const API_ENDPOINTS =  {
   VPS: {
     CONTROLLER: API_URL  + "vps/",
     GET_ALL: 'supplier/get-all',
-    CREATE: 'supplier/create',
-    UPDATE: 'supplier/update'
+    ADD: 'supplier/add',
+    EDIT: 'supplier/edit',
+    REMOVE: 'supplier/remove'
   },
 }

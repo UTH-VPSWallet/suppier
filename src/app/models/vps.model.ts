@@ -1,6 +1,4 @@
-export interface VPSGetAllReq {
-    Email: string;
-}
+export interface VPSGetAllReq { Email: string }
 export interface VPSGetAllRes {
     ID: number;
     Name: string;
@@ -29,3 +27,4 @@ export interface VPSUpdateReq {
     PricePerMonth: number;
     Status: number;
 }
+export interface VPSDeleteReq { ID: number }

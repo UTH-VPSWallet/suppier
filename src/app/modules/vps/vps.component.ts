@@ -22,7 +22,7 @@ export class VPSComponent  {
   showModal = false;
   showDeleteConfirm = false;
   isEditing = false;
-  deleteTargetId = '';
+  deleteTargetId = 0;
   deleteTargetName = '';
 
   // Toast notification
@@ -41,17 +41,9 @@ export class VPSComponent  {
   formData: VPSCreateReq = this.getEmptyVPS();
 
   vpss: VPSGetAllRes[] = [];
-  products: Product[] = [
-    { id: 'v1', name: 'SSD Cloud VPS A', provider: 'Nhân Hòa', cpu: '3 Core Xeon', ram: '2GB', storage: '20GB SSD', price: 150000, active: true, sold: 82, location: 'HN' },
-    { id: 'v2', name: 'SSD Cloud VPS B', provider: 'Nhân Hòa', cpu: '4 Core Xeon', ram: '4GB', storage: '40GB SSD', price: 280000, active: true, sold: 45, location: 'HN' },
-    { id: 'v3', name: 'VPS Standard S1', provider: 'VNPT Cloud', cpu: '2 Core Xeon E5', ram: '1GB', storage: '15GB SSD', price: 89000, active: true, sold: 67, location: 'HN' },
-    { id: 'v4', name: 'VPS Standard S2', provider: 'VNPT Cloud', cpu: '4 Core Xeon E5', ram: '2GB', storage: '30GB SSD', price: 165000, active: true, sold: 38, location: 'SG' },
-    { id: 'v5', name: 'Viettel IDC VPS Pro', provider: 'Viettel IDC', cpu: '6 Core Scalable', ram: '8GB', storage: '80GB NVMe', price: 550000, active: true, sold: 18, location: 'HN' },
-    { id: 'v6', name: 'FPT Cloud Basic', provider: 'FPT Telecom', cpu: '2 Core AMD EPYC', ram: '2GB', storage: '25GB SSD', price: 120000, active: false, sold: 12, location: 'SG' },
-  ];
 
   get filtered() {
-    return this.products.filter(p => !this.search || p.name.toLowerCase().includes(this.search.toLowerCase()) || p.provider.toLowerCase().includes(this.search.toLowerCase()));
+    return this.vpss.filter(vps => !this.search || vps.Name.toLowerCase().includes(this.search.toLowerCase()));
   }
 
   constructor(
@@ -70,7 +62,6 @@ export class VPSComponent  {
     const vps = await this.vpsService.GetAll(vpsReq);
     if(vps.Status == httpCodes.OK) this.vpss = vps.Data;
     this.cdr.detectChanges();
-    console.log("vps", vps)
   }
 
   getEmptyVPS(): VPSCreateReq {
@@ -120,14 +111,14 @@ export class VPSComponent  {
     }
 
     if (this.isEditing) {
-      const edit = await this.vpsService.Update(this.formData);
+      const edit = await this.vpsService.Edit(this.formData);
       if(edit.Status == httpCodes.OK){
         this.showToast(`Đã cập nhật gói VPS "${this.formData.Name}" thành công!`, 'success');
         this.closeModal();
         this.BindData();
       }
     } else {
-      const save = await this.vpsService.Create(this.formData);
+      const save = await this.vpsService.Add(this.formData);
       if(save.Status == httpCodes.OK){
         this.showToast(`Đã thêm gói VPS "${this.formData.Name}" thành công!`, 'success');
         this.closeModal();
@@ -138,32 +129,29 @@ export class VPSComponent  {
   }
 
   // Open delete confirmation
-  openDeleteConfirm(product: Product) {
-    this.deleteTargetId = product.id;
-    this.deleteTargetName = product.name;
+  openDeleteConfirm(vps: VPSGetAllRes) {
+    this.deleteTargetId = vps.ID;
+    this.deleteTargetName = vps.Name;
     this.showDeleteConfirm = true;
   }
 
   // Close delete confirmation
   closeDeleteConfirm() {
     this.showDeleteConfirm = false;
-    this.deleteTargetId = '';
+    this.deleteTargetId = 0;
     this.deleteTargetName = '';
   }
 
   // Confirm delete
-  confirmDelete() {
-    this.products = this.products.filter(p => p.id !== this.deleteTargetId);
-    this.showToast(`Đã xóa gói VPS "${this.deleteTargetName}" thành công!`, 'success');
-    this.closeDeleteConfirm();
+  async confirmDelete() {
+    this.vpss = this.vpss.filter(p => p.ID !== this.deleteTargetId);
+    const del = await this.vpsService.Remove({ID: this.deleteTargetId})
+    if(del.Status == httpCodes.OK){
+      this.showToast(`Đã xóa gói VPS "${this.deleteTargetName}" thành công!`, 'success');
+      this.closeDeleteConfirm();
+      this.BindData();
+    }
   }
-
-  // Toggle active
-  // toggleActive(vps: Product) {
-  //   product.active = !product.active;
-  //   const status = product.active ? 'kích hoạt' : 'tạm dừng';
-  //   this.showToast(`Đã ${status} gói VPS "${product.name}"`, 'info');
-  // }
 
   // Toast helper
   showToast(message: string, type: 'success' | 'error' | 'info') {
