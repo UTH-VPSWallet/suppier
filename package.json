@@ -7,7 +7,8 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "cbuild": "ng build --output-path=dist/uth-vpswallet-supplier-dev && echo /* /index.html 200> dist/uth-vpswallet-supplier-dev/browser/_redirects && powershell Compress-Archive -Path dist/uth-vpswallet-supplier-dev/browser/* -DestinationPath dist/uth-vpswallet-supplier-dev/uth-vpswallet-supplier-dev.zip"
+    "cbuild": "ng build --output-path=dist/uth-vpswallet-supplier-dev && echo /* /index.html 200> dist/uth-vpswallet-supplier-dev/browser/_redirects && powershell Compress-Archive -Path dist/uth-vpswallet-supplier-dev/browser/* -DestinationPath dist/uth-vpswallet-supplier-dev/uth-vpswallet-supplier-dev.zip",
+    "deploy:dev": "ng build --output-path=dist/uth-vpswallet-supplier-dev && echo /* /index.html 200 > dist/uth-vpswallet-supplier-dev/browser/_redirects && wrangler pages deploy dist/uth-vpswallet-supplier-dev/browser --project-name=uth-vpswallet-supplier-dev"
   },
   "prettier": {
     "printWidth": 100,
