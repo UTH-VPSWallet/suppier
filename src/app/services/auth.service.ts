@@ -11,18 +11,11 @@ export class AuthService extends ApiService {
 
     async login(req: LoginReq) {
         const url = API_ENDPOINTS.SUPPLIER.CONTROLLER + API_ENDPOINTS.SUPPLIER.LOGIN;
-        try {
-            const resData = await lastValueFrom(this.post<LoginRes>(url, req));
-            if (resData && resData.status === HttpStatusCode.Ok) {
-                if(resData.result) return resData;  
-            }
-            return null;
-        } 
-        catch (err) { return err }
+        return lastValueFrom(this.post<LoginRes>(url, req));
     }
 
     isLoggedIn(): boolean {
-    let auth: LoginStorage = { Name: '', Token: '' };
+    let auth: LoginStorage = { Email: '', Name: '', Token: '' };
     try {
       const local = localStorage.getItem(LOCALSTORAGE.AUTH);
       if(local) auth = JSON.parse(local);

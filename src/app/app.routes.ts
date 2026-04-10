@@ -1,4 +1,4 @@
-import { mapToCanActivate, Routes } from '@angular/router';
+import { Routes } from '@angular/router';
 import { MainLayoutComponent } from './layouts/main-layout/main-layout.component';
 import { AuthGuard } from './services/auth.guard';
 import { DashboardComponent } from './modules/dashboard/dashboard.component';
@@ -30,8 +30,8 @@ export const routes: Routes = [
         loadComponent: () => import('./modules/orders/orders.component').then(m => m.OrdersComponent),
       },
       {
-        path: 'products',
-        loadComponent: () => import('./modules/products/products.component').then(m => m.ProductsComponent),
+        path: 'vps',
+        loadComponent: () => import('./modules/vps/vps.component').then(m => m.VPSComponent),
       },
       {
         path: 'customers',

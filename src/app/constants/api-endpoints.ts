@@ -18,7 +18,10 @@ export const API_URL = environment.API_URL;
 export const API_ENDPOINTS =  {
   SUPPLIER: {
     CONTROLLER: API_URL  + "supplier/",
-    LOGIN: 'login',
-    GET_ALL: '/supplier/get-categories'
+    LOGIN: 'login'
+  },
+  VPS: {
+    CONTROLLER: API_URL  + "vps/",
+    GET_ALL: 'supplier/get-all'
   },
 }

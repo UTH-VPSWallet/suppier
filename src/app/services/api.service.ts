@@ -26,11 +26,11 @@ export class ApiService {
    * Ex: [param1, param2, param3]
    * => apiUrl/param1/param2/param3
    */
-  get<T = any>(apiUrl: string, parameter: any[] = []): Observable<ApiResponse<T>> {
+  // get<T = any>(apiUrl: string, parameter: any[] = []): Observable<ApiResponse<T>> {
+  get<T = any>(apiUrl: string, parameter: any[] = []): Observable<T> {
     parameter.forEach(p => {
       apiUrl += ('/' + p);
     });
-
     return this.http.get<T>(apiUrl, {
       headers: this.getHeaders(),
       observe: 'response',
@@ -48,7 +48,7 @@ export class ApiService {
   getWithQuery<T = any>(
     apiUrl: string,
     parameter: { [param: string]: string | number | boolean | ReadonlyArray<string | number | boolean> },
-  ): Observable<ApiResponse<T>> {
+  ): Observable<T> {
     return this.http.get<T>(apiUrl, {
       headers: this.getHeaders(),
       params: this.getParams(parameter),
@@ -65,7 +65,7 @@ export class ApiService {
   post<TResponse = any, TBody = any>(
     apiUrl: string,
     body?: TBody,
-  ): Observable<ApiResponse<TResponse>> {
+  ): Observable<TResponse> {
     return this.http.post<TResponse>(
       apiUrl,
       body || {},
@@ -88,7 +88,8 @@ export class ApiService {
   ): Observable<TResponse> {
     return this.post<TResponse, TBody>(apiUrl, body).pipe(
 
-      map((res) => (res?.result as TResponse)),
+      // map((res) => (res?.result as TResponse)),
+      map((res) => (res as TResponse)),
      catchError((e) => this.forwardError(e)),
     );
   }
@@ -99,7 +100,7 @@ export class ApiService {
   postFormData<TResponse = any, TBody = any>(
     apiUrl: string,
     body?: TBody,
-  ): Observable<ApiResponse<TResponse>> {
+  ): Observable<TResponse> {
     return this.http.post<TResponse>(
       apiUrl,
       body,
@@ -116,7 +117,7 @@ export class ApiService {
   /**
    * PUT request
    */
-  put<TResponse = any, TBody = any>(apiUrl: string, body?: TBody): Observable<ApiResponse<TResponse>> {
+  put<TResponse = any, TBody = any>(apiUrl: string, body?: TBody): Observable<TResponse> {
     return this.http.put<TResponse>(
       apiUrl,
       body || {},
@@ -136,7 +137,7 @@ export class ApiService {
   putFormData<TResponse = any, TBody = any>(
     apiUrl: string,
     body?: TBody,
-  ): Observable<ApiResponse<TResponse>> {
+  ): Observable<TResponse> {
     return this.http.put<TResponse>(
       apiUrl,
       body,
@@ -145,7 +146,8 @@ export class ApiService {
         observe: 'response',
       },
     ).pipe(
-      map(this.forwardData),
+      // map(this.forwardData),
+      map(res => this.forwardData(res)), 
       catchError((e) => this.forwardError(e)),
     );
   }
@@ -153,7 +155,7 @@ export class ApiService {
   /**
    * DELETE request
    */
-  delete<T = any>(apiUrl: string, data?: any | any[]): Observable<ApiResponse<T>> {
+  delete<T = any>(apiUrl: string, data?: any | any[]): Observable<T> {
     if (data) {
       if (Array.isArray(data)) {
         data.forEach((p: string) => {
@@ -191,10 +193,11 @@ export class ApiService {
   /**
    * Forward data
    */
-  private forwardData<T = any>(res: HttpResponse<T>): ApiResponse<T> {
-    return { result: res.body, status: res.status, message: 'successful' };
-  }
+  // private forwardData<T = any>(res: HttpResponse<T>): ApiResponse<T> {
+  //   return { result: res.body, status: res.status, message: 'successful' };
+  // }
 
+  private forwardData<T>(res: HttpResponse<T>): T { return res.body as T }
   /**
    * Request Error handler
    */

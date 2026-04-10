@@ -1,17 +1,20 @@
 import { Component } from "@angular/core";
 import { FormsModule } from "@angular/forms";
-import { CategoryService } from "../../services/category.service";
+import { VPSService } from "../../services/vps.service";
+import { VPSGetAllReq } from "../../models/vps.model";
+import { LOCALSTORAGE } from "../../constants/text.constant";
+import { LoginStorage } from "../../models/auth.model";
 
 
 @Component({
-  selector: 'products',
+  selector: 'vw-vps',
   standalone: true,
   imports: [FormsModule],
-  templateUrl: './products.component.html',
-  styleUrls: ['./products.component.scss']
+  templateUrl: './vps.component.html',
+  styleUrls: ['./vps.component.scss']
 })
 
-export class ProductsComponent  {
+export class VPSComponent  {
   search = '';
   showModal = false;
   showDeleteConfirm = false;
@@ -48,15 +51,21 @@ export class ProductsComponent  {
   }
 
   constructor(
-      private categoryService: CategoryService,
-    ) {}
-    async ngOnInit(): Promise<void> {
+    private vpsService: VPSService
+  ) {}
 
-      const res = await this.categoryService.GetAll(
-        'nhanhoa@gmail.com'
-      );
-      console.log("res", res);
-    }
+  async ngOnInit(): Promise<void> {
+    await this.BindData();
+  }
+  
+  async BindData(): Promise<void>{
+    let auth: LoginStorage = { Email: '', Name: '', Token: '' };
+    const local = localStorage.getItem(LOCALSTORAGE.AUTH);
+    if(local) auth = JSON.parse(local);
+    const vpsReq: VPSGetAllReq = { Email: auth.Email };
+    const vps = await this.vpsService.GetAll(vpsReq);
+    console.log("vps", vps)
+  }
 
   getEmptyProduct(): Product {
     return {

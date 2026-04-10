@@ -7,6 +7,7 @@ export interface LoginRes {
     Token: string;
 }
 export interface LoginStorage {
-  Name: string;
-  Token: string;
+    Email: string;
+    Name: string;
+    Token: string;
 }

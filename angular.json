@@ -63,7 +63,8 @@
               "buildTarget": "supplier:build:development"
             }
           },
-          "defaultConfiguration": "development"
+          "defaultConfiguration": "development",
+          "options": { "port": 4400 }
         },
         "test": {
           "builder": "@angular/build:unit-test"

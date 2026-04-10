@@ -41,12 +41,13 @@ export class LoginComponent {
       Pass: this.loginForm.value.Pass ?? ''
     }
     const res: any = await this.authService.login(loginReq);
-    if(res.result.Status != HttpStatusCode.Ok){
-      this.loginErr = res.result.Message;
+    if(res.Status != HttpStatusCode.Ok){
+      this.loginErr = res.Message;
       this.cdr.detectChanges();
     }
     else{
-      localStorage.setItem(LOCALSTORAGE.AUTH, JSON.stringify(res.result.Data));
+      res.Data.Email = loginReq.Email;
+      localStorage.setItem(LOCALSTORAGE.AUTH, JSON.stringify(res.Data));
       this.router.navigate(['/dashboard']);
     }
   }
