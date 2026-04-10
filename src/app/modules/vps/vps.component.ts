@@ -1,7 +1,7 @@
 import { ChangeDetectorRef, Component } from "@angular/core";
 import { FormsModule } from "@angular/forms";
 import { VPSService } from "../../services/vps.service";
-import { VPSCreateReq, VPSGetAllReq, VPSGetAllRes } from "../../models/vps.model";
+import { VPSCreateReq, VPSGetAllReq, VPSGetAllRes, VPSUpdateReq } from "../../models/vps.model";
 import { LOCALSTORAGE } from "../../constants/text.constant";
 import { LoginStorage } from "../../models/auth.model";
 import { httpCodes, VPSStatus } from "../../constants/enum.constant";
@@ -75,6 +75,7 @@ export class VPSComponent  {
 
   getEmptyVPS(): VPSCreateReq {
     return {
+      ID: 0,
       Name: '',
       CPU: '',
       RAM: '',
@@ -119,11 +120,12 @@ export class VPSComponent  {
     }
 
     if (this.isEditing) {
-      // const idx = this.products.findIndex(p => p.id === this.formData.id);
-      // if (idx !== -1) {
-      //   this.products[idx] = { ...this.formData };
-      //  this.showToast(`Đã cập nhật gói VPS "${this.formData.Name}" thành công!`, 'success');
-      // }
+      const edit = await this.vpsService.Update(this.formData);
+      if(edit.Status == httpCodes.OK){
+        this.showToast(`Đã cập nhật gói VPS "${this.formData.Name}" thành công!`, 'success');
+        this.closeModal();
+        this.BindData();
+      }
     } else {
       const save = await this.vpsService.Create(this.formData);
       if(save.Status == httpCodes.OK){

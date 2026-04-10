@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { lastValueFrom } from "rxjs";
 import { API_ENDPOINTS } from "../constants/api-endpoints";
-import { VPSCreateReq, VPSGetAllReq, VPSGetAllRes } from "../models/vps.model";
+import { VPSCreateReq, VPSGetAllReq, VPSGetAllRes, VPSUpdateReq } from "../models/vps.model";
 import { ApiService } from "./api.service";
 import { Res, ResData } from "../models/res.dto";
 
@@ -14,6 +14,10 @@ export class VPSService extends ApiService {
     }
     async Create(req: VPSCreateReq): Promise<Res> {
         const url = API_ENDPOINTS.VPS.CONTROLLER + API_ENDPOINTS.VPS.CREATE;
+        return await lastValueFrom(this.post<Res>(url, req));
+    }
+    async Update(req: VPSUpdateReq): Promise<Res> {
+        const url = API_ENDPOINTS.VPS.CONTROLLER + API_ENDPOINTS.VPS.UPDATE;
         return await lastValueFrom(this.post<Res>(url, req));
     }
 }

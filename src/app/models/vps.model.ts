@@ -11,6 +11,7 @@ export interface VPSGetAllRes {
     Status: number;
 }
 export interface VPSCreateReq {
+    ID: number;
     Name: string;
     CPU :string;
     RAM :string;
@@ -19,4 +20,12 @@ export interface VPSCreateReq {
     Status: number;
     Email: string;
 }
-
+export interface VPSUpdateReq {
+    ID: number;
+    Name: string;
+    CPU :string;
+    RAM :string;
+    Storage :string;
+    PricePerMonth: number;
+    Status: number;
+}
