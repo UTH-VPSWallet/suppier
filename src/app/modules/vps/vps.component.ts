@@ -1,7 +1,7 @@
 import { ChangeDetectorRef, Component } from "@angular/core";
 import { FormsModule } from "@angular/forms";
 import { VPSService } from "../../services/vps.service";
-import { VPSGetAllReq, VPSGetAllRes } from "../../models/vps.model";
+import { VPSCreateReq, VPSGetAllReq, VPSGetAllRes } from "../../models/vps.model";
 import { LOCALSTORAGE } from "../../constants/text.constant";
 import { LoginStorage } from "../../models/auth.model";
 import { httpCodes, VPSStatus } from "../../constants/enum.constant";
@@ -17,6 +17,7 @@ import { httpCodes, VPSStatus } from "../../constants/enum.constant";
 
 export class VPSComponent  {
   VPSStatus = VPSStatus;
+  auth: LoginStorage = { Email: '', Name: '', Token: '' };
   search = '';
   showModal = false;
   showDeleteConfirm = false;
@@ -37,7 +38,7 @@ export class VPSComponent  {
   ];
 
   // Form model
-  formData: Product = this.getEmptyProduct();
+  formData: VPSCreateReq = this.getEmptyVPS();
 
   vpss: VPSGetAllRes[] = [];
   products: Product[] = [
@@ -63,43 +64,41 @@ export class VPSComponent  {
   }
   
   async BindData(): Promise<void>{
-    let auth: LoginStorage = { Email: '', Name: '', Token: '' };
     const local = localStorage.getItem(LOCALSTORAGE.AUTH);
-    if(local) auth = JSON.parse(local);
-    const vpsReq: VPSGetAllReq = { Email: auth.Email };
+    if(local) this.auth = JSON.parse(local);
+    const vpsReq: VPSGetAllReq = { Email: this.auth.Email };
     const vps = await this.vpsService.GetAll(vpsReq);
     if(vps.Status == httpCodes.OK) this.vpss = vps.Data;
     this.cdr.detectChanges();
     console.log("vps", vps)
   }
 
-  getEmptyProduct(): Product {
+  getEmptyVPS(): VPSCreateReq {
     return {
-      id: '',
-      name: '',
-      provider: '',
-      cpu: '',
-      ram: '',
-      storage: '',
-      price: 0,
-      active: true,
-      sold: 0,
-      location: 'HN',
+      Name: '',
+      CPU: '',
+      RAM: '',
+      Storage: '',
+      PricePerMonth: 0,
+      Status: 0,
+      Email: ''
     };
   }
 
   // Open add modal
   openAddModal() {
     this.isEditing = false;
-    this.formData = this.getEmptyProduct();
-    this.formData.id = 'v' + (Date.now().toString(36));
+    this.formData = this.getEmptyVPS();
     this.showModal = true;
   }
 
   // Open edit modal
-  openEditModal(product: Product) {
+  openEditModal(vps: VPSGetAllRes) {
     this.isEditing = true;
-    this.formData = { ...product };
+    this.formData = { 
+      ...vps,
+      Email: this.auth.Email
+    };
     this.showModal = true;
   }
 
@@ -109,21 +108,29 @@ export class VPSComponent  {
   }
 
   // Save (add or edit)
-  saveProduct() {
-    if (!this.formData.name.trim() || !this.formData.provider || !this.formData.cpu.trim()) {
+  async save() {
+    this.formData.Email = this.auth.Email;
+    if(this.formData.Status) this.formData.Status = 1;
+    else this.formData.Status = 0;
+    if (!this.formData.Name.trim() || !this.formData.CPU.trim() || !this.formData.RAM.trim()
+      || !this.formData.Storage.trim() || !this.formData.Email.trim() || !this.formData.PricePerMonth) {
       this.showToast('Vui lòng điền đầy đủ các trường bắt buộc!', 'error');
       return;
     }
 
     if (this.isEditing) {
-      const idx = this.products.findIndex(p => p.id === this.formData.id);
-      if (idx !== -1) {
-        this.products[idx] = { ...this.formData };
-        this.showToast(`Đã cập nhật gói VPS "${this.formData.name}" thành công!`, 'success');
-      }
+      // const idx = this.products.findIndex(p => p.id === this.formData.id);
+      // if (idx !== -1) {
+      //   this.products[idx] = { ...this.formData };
+      //  this.showToast(`Đã cập nhật gói VPS "${this.formData.Name}" thành công!`, 'success');
+      // }
     } else {
-      this.products.unshift({ ...this.formData });
-      this.showToast(`Đã thêm gói VPS "${this.formData.name}" thành công!`, 'success');
+      const save = await this.vpsService.Create(this.formData);
+      if(save.Status == httpCodes.OK){
+        this.showToast(`Đã thêm gói VPS "${this.formData.Name}" thành công!`, 'success');
+        this.closeModal();
+        this.BindData();
+      } 
     }
     this.closeModal();
   }
@@ -168,12 +175,11 @@ export class VPSComponent  {
   // Form validation
   get isFormValid(): boolean {
     return !!(
-      this.formData.name.trim() &&
-      this.formData.provider &&
-      this.formData.cpu.trim() &&
-      this.formData.ram.trim() &&
-      this.formData.storage.trim() &&
-      this.formData.price > 0
+      this.formData.Name.trim() &&
+      this.formData.CPU.trim() &&
+      this.formData.RAM.trim() &&
+      this.formData.Storage.trim() &&
+      this.formData.PricePerMonth > 0
     );
   }
 }

@@ -28,7 +28,7 @@
       </div>
       <div class="vps-stat-pill vps-stat-pill--amber">
         <span class="vps-stat-pill__icon">⏸️</span>
-        <span>{{ vpss.filter(vps => vps.Status == VPSStatus.Disable).length }} tạm dừng</span>
+        <span>{{ vpss.filter(vps => vps.Status == VPSStatus.Pause).length }} tạm dừng</span>
       </div>
     </div>
   </div>
@@ -77,25 +77,17 @@
               <div class="vps-spec__value">{{ vps.Storage }}</div>
             </div>
           </div>
-          <!-- <div class="vps-spec">
-            <span class="vps-spec__icon">📍</span>
-            <div>
-              <div class="vps-spec__label">Vị trí</div>
-              <div class="vps-spec__value">{{ vps.location === 'HN' ? 'Hà Nội' : p.location === 'SG' ? 'TP.HCM' : 'Đà Nẵng' }}</div>
-            </div>
-          </div> -->
         </div>
 
         <!-- Footer -->
         <div class="vps-card__footer">
           <div class="vps-card__pricing">
             <div class="vps-card__price">{{ vps.PricePerMonth.toLocaleString('vi-VN') }}₫<span class="vps-card__price-sub">/tháng</span></div>
-            <!-- <div class="vps-card__sold">📊 {{ p.sold }} đơn đã bán</div> -->
           </div>
           <div class="vps-card__actions">
-            <!-- <button class="vps-action-btn vps-action-btn--edit" title="Chỉnh sửa" (click)="openEditModal(vps)">
+            <button class="vps-action-btn vps-action-btn--edit" title="Chỉnh sửa" (click)="openEditModal(vps)">
               ✏️
-            </button> -->
+            </button>
             <!-- <button class="vps-action-btn vps-action-btn--delete" title="Xóa" (click)="openDeleteConfirm(p)">
               🗑️
             </button> -->
@@ -136,64 +128,39 @@
 
       <!-- Modal Body -->
       <div class="vps-modal__body">
-        <!-- Name & Provider row -->
+        <!-- Name & RAM -->
         <div class="vps-form-row">
           <div class="vps-form-group">
             <label class="vps-form-label">
               Tên gói VPS <span class="required">*</span>
             </label>
-            <input type="text" class="vps-form-input" [(ngModel)]="formData.name"
+            <input type="text" class="vps-form-input" [(ngModel)]="formData.Name"
               placeholder="VD: SSD Cloud VPS Pro" />
-          </div>
-          <div class="vps-form-group">
-            <label class="vps-form-label">
-              Nhà cung cấp <span class="required">*</span>
-            </label>
-            <select class="vps-form-select" [(ngModel)]="formData.provider">
-              <option value="" disabled>-- Chọn nhà cung cấp --</option>
-              @for (opt of providerOptions; track opt) {
-                <option [value]="opt">{{ opt }}</option>
-              }
-            </select>
-          </div>
-        </div>
-
-        <!-- CPU & RAM row -->
-        <div class="vps-form-row">
-          <div class="vps-form-group">
-            <label class="vps-form-label">
-              CPU <span class="required">*</span>
-            </label>
-            <input type="text" class="vps-form-input" [(ngModel)]="formData.cpu"
-              placeholder="VD: 4 Core Xeon E5" />
           </div>
           <div class="vps-form-group">
             <label class="vps-form-label">
               RAM <span class="required">*</span>
             </label>
-            <input type="text" class="vps-form-input" [(ngModel)]="formData.ram"
+            <input type="text" class="vps-form-input" [(ngModel)]="formData.RAM"
               placeholder="VD: 4GB" />
           </div>
         </div>
 
-        <!-- Storage & Location row -->
+        <!-- CPU & Storage -->
         <div class="vps-form-row">
+          <div class="vps-form-group">
+            <label class="vps-form-label">
+              CPU <span class="required">*</span>
+            </label>
+            <input type="text" class="vps-form-input" [(ngModel)]="formData.CPU"
+              placeholder="VD: 4 Core Xeon E5" />
+          </div>
           <div class="vps-form-group">
             <label class="vps-form-label">
               Lưu trữ <span class="required">*</span>
             </label>
-            <input type="text" class="vps-form-input" [(ngModel)]="formData.storage"
+            <input type="text" class="vps-form-input" [(ngModel)]="formData.Storage"
               placeholder="VD: 40GB SSD" />
-          </div>
-          <div class="vps-form-group">
-            <label class="vps-form-label">
-              Vị trí
-            </label>
-            <select class="vps-form-select" [(ngModel)]="formData.location">
-              @for (loc of locationOptions; track loc.value) {
-                <option [value]="loc.value">{{ loc.label }}</option>
-              }
-            </select>
           </div>
         </div>
 
@@ -204,7 +171,7 @@
               Giá (₫/tháng) <span class="required">*</span>
             </label>
             <div class="vps-form-price-wrap">
-              <input type="number" class="vps-form-input vps-form-input--price" [(ngModel)]="formData.price"
+              <input type="number" class="vps-form-input vps-form-input--price" [(ngModel)]="formData.PricePerMonth"
                 placeholder="150000" min="0" />
               <span class="vps-form-price-suffix">₫</span>
             </div>
@@ -213,17 +180,17 @@
             <label class="vps-form-label">Trạng thái</label>
             <div class="vps-form-status-toggle">
               <label class="vps-toggle-switch">
-                <input type="checkbox" [(ngModel)]="formData.active" />
+                <input type="checkbox" [(ngModel)]="formData.Status" />
                 <span class="vps-toggle-slider"></span>
               </label>
-              <span class="vps-form-status-text" [class.active]="formData.active">
-                {{ formData.active ? '✅ Đang bán' : '⏸️ Tạm dừng' }}
+              <span class="vps-form-status-text" [class.active]="formData.Status == 1">
+                {{ formData.Status == 1 ? '✅ Đang bán' : '⏸️ Tạm dừng' }}
               </span>
             </div>
           </div>
         </div>
 
-        @if (isEditing) {
+        <!-- @if (isEditing) {
           <div class="vps-form-row">
             <div class="vps-form-group">
               <label class="vps-form-label">Số đơn đã bán</label>
@@ -232,13 +199,13 @@
             </div>
             <div class="vps-form-group"></div>
           </div>
-        }
+        } -->
       </div>
 
       <!-- Modal Footer -->
       <div class="vps-modal__footer">
         <button class="vps-btn-cancel" (click)="closeModal()">Hủy bỏ</button>
-        <button class="vps-btn-save" [disabled]="!isFormValid" (click)="saveProduct()">
+        <button class="vps-btn-save" [disabled]="!isFormValid" (click)="save()">
           {{ isEditing ? '💾 Lưu Thay Đổi' : '➕ Thêm Gói VPS' }}
         </button>
       </div>
