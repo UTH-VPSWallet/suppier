@@ -15,8 +15,8 @@ export class SidebarComponent {
   ];
 
   manageItems: NavItem[] = [
+    { label: 'VPS', icon: '🖥️', route: '/vps' },
     { label: 'Đơn Hàng', icon: '📋', route: '/orders', badge: 5 },
-    { label: 'VPS / Sản Phẩm', icon: '🖥️', route: '/vps' },
     { label: 'Khách Hàng', icon: '👥', route: '/customers' },
     { label: 'Nhà Cung Cấp', icon: '🏢', route: '/providers' },
     { label: 'Thư Mục', icon: '📁', route: '/folders' },

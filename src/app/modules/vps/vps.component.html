@@ -2,8 +2,8 @@
   <!-- Header -->
   <div class="vps-page__header">
     <div>
-      <h1 class="vps-page__title">🖥️ Quản Lý VPS / Sản Phẩm</h1>
-      <p class="vps-page__sub">{{ products.length }} gói VPS · {{ products.filter(p => p.active).length }} đang hoạt động</p>
+      <h1 class="vps-page__title">🖥️ Quản Lý VPS</h1>
+      <!-- <p class="vps-page__sub">{{ products.length }} gói VPS · {{ products.filter(p => p.active).length }} đang hoạt động</p> -->
     </div>
     <button class="vps-btn-add" (click)="openAddModal()">
       <span>+</span> Thêm Gói VPS
@@ -20,36 +20,36 @@
     <div class="vps-stats-mini">
       <div class="vps-stat-pill">
         <span class="vps-stat-pill__icon">📦</span>
-        <span>{{ products.length }} gói</span>
+        <span>{{ vpss.length }} gói</span>
       </div>
       <div class="vps-stat-pill vps-stat-pill--green">
         <span class="vps-stat-pill__icon">✅</span>
-        <span>{{ products.filter(p => p.active).length }} đang bán</span>
+        <span>{{ vpss.filter(vps => vps.Status == VPSStatus.Enable).length }} đang bán</span>
       </div>
       <div class="vps-stat-pill vps-stat-pill--amber">
         <span class="vps-stat-pill__icon">⏸️</span>
-        <span>{{ products.filter(p => !p.active).length }} tạm dừng</span>
+        <span>{{ vpss.filter(vps => vps.Status == VPSStatus.Disable).length }} tạm dừng</span>
       </div>
     </div>
   </div>
 
   <!-- VPS Cards Grid -->
   <div class="vps-grid">
-    @for (p of filtered; track p.id) {
-      <div class="vps-card" [class.vps-card--inactive]="!p.active">
+    @for (vps of vpss; track vps.Name) {
+      <div class="vps-card" [class.vps-card--inactive]="!vps.Status">
         <!-- Card Header -->
         <div class="vps-card__header">
-          <div class="vps-card__avatar" [class.vps-card__avatar--inactive]="!p.active">
+          <div class="vps-card__avatar" [class.vps-card__avatar--inactive]="!vps.Status">
             🖥️
           </div>
           <div class="vps-card__title-wrap">
-            <div class="vps-card__name">{{ p.name }}</div>
-            <div class="vps-card__provider">{{ p.provider }}</div>
+            <div class="vps-card__name">{{ vps.Name }}</div>
           </div>
           <div class="vps-card__status-wrap">
-            <button class="vps-status-toggle" [class.active]="p.active" (click)="toggleActive(p)" [title]="p.active ? 'Nhấn để tạm dừng' : 'Nhấn để kích hoạt'">
+           <!-- <button class="vps-status-toggle" [class.active]="vps.Status" (click)="toggleActive(vps)" [title]="vps.Status ? 'Nhấn để tạm dừng' : 'Nhấn để kích hoạt'"> -->
+            <button class="vps-status-toggle" [class.active]="vps.Status" [title]="vps.Status ? 'Nhấn để tạm dừng' : 'Nhấn để kích hoạt'">
               <span class="vps-status-toggle__dot"></span>
-              <span class="vps-status-toggle__label">{{ p.active ? 'Đang bán' : 'Tạm dừng' }}</span>
+              <span class="vps-status-toggle__label">{{ vps.Status ? 'Đang bán' : 'Tạm dừng' }}</span>
             </button>
           </div>
         </div>
@@ -60,45 +60,45 @@
             <span class="vps-spec__icon">⚙️</span>
             <div>
               <div class="vps-spec__label">CPU</div>
-              <div class="vps-spec__value">{{ p.cpu }}</div>
+              <div class="vps-spec__value">{{ vps.CPU }}</div>
             </div>
           </div>
           <div class="vps-spec">
             <span class="vps-spec__icon">🧠</span>
             <div>
               <div class="vps-spec__label">RAM</div>
-              <div class="vps-spec__value">{{ p.ram }}</div>
+              <div class="vps-spec__value">{{ vps.RAM }}</div>
             </div>
           </div>
           <div class="vps-spec">
             <span class="vps-spec__icon">💾</span>
             <div>
               <div class="vps-spec__label">Lưu trữ</div>
-              <div class="vps-spec__value">{{ p.storage }}</div>
+              <div class="vps-spec__value">{{ vps.Storage }}</div>
             </div>
           </div>
-          <div class="vps-spec">
+          <!-- <div class="vps-spec">
             <span class="vps-spec__icon">📍</span>
             <div>
               <div class="vps-spec__label">Vị trí</div>
-              <div class="vps-spec__value">{{ p.location === 'HN' ? 'Hà Nội' : p.location === 'SG' ? 'TP.HCM' : 'Đà Nẵng' }}</div>
+              <div class="vps-spec__value">{{ vps.location === 'HN' ? 'Hà Nội' : p.location === 'SG' ? 'TP.HCM' : 'Đà Nẵng' }}</div>
             </div>
-          </div>
+          </div> -->
         </div>
 
         <!-- Footer -->
         <div class="vps-card__footer">
           <div class="vps-card__pricing">
-            <div class="vps-card__price">{{ p.price.toLocaleString('vi-VN') }}₫<span class="vps-card__price-sub">/tháng</span></div>
-            <div class="vps-card__sold">📊 {{ p.sold }} đơn đã bán</div>
+            <div class="vps-card__price">{{ vps.PricePerMonth.toLocaleString('vi-VN') }}₫<span class="vps-card__price-sub">/tháng</span></div>
+            <!-- <div class="vps-card__sold">📊 {{ p.sold }} đơn đã bán</div> -->
           </div>
           <div class="vps-card__actions">
-            <button class="vps-action-btn vps-action-btn--edit" title="Chỉnh sửa" (click)="openEditModal(p)">
+            <!-- <button class="vps-action-btn vps-action-btn--edit" title="Chỉnh sửa" (click)="openEditModal(vps)">
               ✏️
-            </button>
-            <button class="vps-action-btn vps-action-btn--delete" title="Xóa" (click)="openDeleteConfirm(p)">
+            </button> -->
+            <!-- <button class="vps-action-btn vps-action-btn--delete" title="Xóa" (click)="openDeleteConfirm(p)">
               🗑️
-            </button>
+            </button> -->
           </div>
         </div>
       </div>

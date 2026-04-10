@@ -31,7 +31,8 @@ export enum LoginStatusRes {
     NotActive = 502
 }
 
-export enum DepositStatus {
+export enum VPSStatus {
     Enable = 1,
+    Pause = 2,
     Disable = 0
 }

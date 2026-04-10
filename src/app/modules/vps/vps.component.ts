@@ -1,9 +1,10 @@
-import { Component } from "@angular/core";
+import { ChangeDetectorRef, Component } from "@angular/core";
 import { FormsModule } from "@angular/forms";
 import { VPSService } from "../../services/vps.service";
-import { VPSGetAllReq } from "../../models/vps.model";
+import { VPSGetAllReq, VPSGetAllRes } from "../../models/vps.model";
 import { LOCALSTORAGE } from "../../constants/text.constant";
 import { LoginStorage } from "../../models/auth.model";
+import { httpCodes, VPSStatus } from "../../constants/enum.constant";
 
 
 @Component({
@@ -15,6 +16,7 @@ import { LoginStorage } from "../../models/auth.model";
 })
 
 export class VPSComponent  {
+  VPSStatus = VPSStatus;
   search = '';
   showModal = false;
   showDeleteConfirm = false;
@@ -37,6 +39,7 @@ export class VPSComponent  {
   // Form model
   formData: Product = this.getEmptyProduct();
 
+  vpss: VPSGetAllRes[] = [];
   products: Product[] = [
     { id: 'v1', name: 'SSD Cloud VPS A', provider: 'Nhân Hòa', cpu: '3 Core Xeon', ram: '2GB', storage: '20GB SSD', price: 150000, active: true, sold: 82, location: 'HN' },
     { id: 'v2', name: 'SSD Cloud VPS B', provider: 'Nhân Hòa', cpu: '4 Core Xeon', ram: '4GB', storage: '40GB SSD', price: 280000, active: true, sold: 45, location: 'HN' },
@@ -51,7 +54,8 @@ export class VPSComponent  {
   }
 
   constructor(
-    private vpsService: VPSService
+    private vpsService: VPSService,
+    private cdr: ChangeDetectorRef
   ) {}
 
   async ngOnInit(): Promise<void> {
@@ -64,6 +68,8 @@ export class VPSComponent  {
     if(local) auth = JSON.parse(local);
     const vpsReq: VPSGetAllReq = { Email: auth.Email };
     const vps = await this.vpsService.GetAll(vpsReq);
+    if(vps.Status == httpCodes.OK) this.vpss = vps.Data;
+    this.cdr.detectChanges();
     console.log("vps", vps)
   }
 
@@ -144,11 +150,11 @@ export class VPSComponent  {
   }
 
   // Toggle active
-  toggleActive(product: Product) {
-    product.active = !product.active;
-    const status = product.active ? 'kích hoạt' : 'tạm dừng';
-    this.showToast(`Đã ${status} gói VPS "${product.name}"`, 'info');
-  }
+  // toggleActive(vps: Product) {
+  //   product.active = !product.active;
+  //   const status = product.active ? 'kích hoạt' : 'tạm dừng';
+  //   this.showToast(`Đã ${status} gói VPS "${product.name}"`, 'info');
+  // }
 
   // Toast helper
   showToast(message: string, type: 'success' | 'error' | 'info') {
