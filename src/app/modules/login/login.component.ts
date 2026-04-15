@@ -16,17 +16,18 @@ import { LOCALSTORAGE } from "../../constants/text.constant";
 
 export class LoginComponent {
 
-  showPassword = false;
   loginForm = new FormGroup({
     Email: new FormControl(''),
     Pass: new FormControl(''),
   });
+
+  showPassword = false;
   loginErr = '';
 
-   constructor(
+  constructor(
     private authService: AuthService,
-     private router: Router,
-     private cdr: ChangeDetectorRef,
+    private router: Router,
+    private cdr: ChangeDetectorRef,
   ) {}
 
   ngOnInit(){

@@ -18,7 +18,9 @@ export const API_URL = environment.API_URL;
 export const API_ENDPOINTS =  {
   SUPPLIER: {
     CONTROLLER: API_URL  + "supplier/",
-    LOGIN: 'login'
+    LOGIN: 'login',
+    CHANGE_PASS: 'change-pass',
+    FORGOT_PASS: 'forgot-pass'
   },
   VPS: {
     CONTROLLER: API_URL  + "vps/",

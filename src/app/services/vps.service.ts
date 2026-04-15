@@ -3,7 +3,7 @@ import { lastValueFrom } from "rxjs";
 import { API_ENDPOINTS } from "../constants/api-endpoints";
 import { VPSCreateReq, VPSDeleteReq, VPSGetAllReq, VPSGetAllRes, VPSUpdateReq } from "../models/vps.model";
 import { ApiService } from "./api.service";
-import { Res, ResData } from "../models/res.dto";
+import { Res, ResData } from "../models/res.model";
 
 @Injectable({ providedIn: 'root' })
 export class VPSService extends ApiService {

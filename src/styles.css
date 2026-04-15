@@ -535,6 +535,13 @@ body {
   margin: 0 0 0.5rem;
 }
 
+.auth-success__new-pass{
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: #22c55e;
+  text-align: center;
+}
+
 .auth-success__desc {
   color: #64748b;
   font-size: 14px;
@@ -1458,4 +1465,6 @@ body {
 
 .err{
   color: red;
+  font-style: italic;
+  text-align: center;
 }
