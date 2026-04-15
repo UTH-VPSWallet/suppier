@@ -44,6 +44,5 @@ export class ForgotPasswordComponent {
       this.newPassword = res.Data.NewPass;
     }
     this.cdr.detectChanges();
-    console.log(res);
   }
 }
