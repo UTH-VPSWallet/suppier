@@ -1,16 +1,15 @@
 import { ChangeDetectorRef, Component } from "@angular/core";
 import { AuthService } from "../../services/auth.service";
-import { LoginReq, LoginRes } from "../../models/auth.model";
+import { LoginReq } from "../../models/auth.model";
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from "@angular/forms";
-import { ResData } from "../../models/res.dto";
 import { HttpStatusCode } from "@angular/common/http";
-import { Router } from "@angular/router";
+import { Router, RouterModule } from "@angular/router";
 import { LOCALSTORAGE } from "../../constants/text.constant";
 
 @Component({
   selector: 'login',
   standalone: true,
-  imports: [FormsModule, ReactiveFormsModule],
+  imports: [FormsModule, ReactiveFormsModule, RouterModule],
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss']
 })
