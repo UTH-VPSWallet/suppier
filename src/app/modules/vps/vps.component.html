@@ -27,7 +27,7 @@
       </div>
       <div class="vps-stat-pill vps-stat-pill--amber">
         <span class="vps-stat-pill__icon">⏸️</span>
-        <span>{{ vpss.filter(vps => vps.Status == VPSStatus.Pause).length }} tạm dừng</span>
+        <span>{{ vpss.filter(vps => vps.Status == VPSStatus.Disable).length }} tạm dừng</span>
       </div>
     </div>
   </div>
@@ -202,8 +202,8 @@
 
       <!-- Modal Footer -->
       <div class="vps-modal__footer">
-        <button class="vps-btn-cancel" (click)="closeModal()">Hủy bỏ</button>
-        <button class="vps-btn-save" [disabled]="!isFormValid" (click)="save()">
+        <button class="vps-btn-cancel" [disabled]="loading" (click)="closeModal()">Hủy bỏ</button>
+        <button class="vps-btn-save {{btndisable}}" [disabled]="!isFormValid || loading" (click)="save()">
           {{ isEditing ? '💾 Lưu Thay Đổi' : '➕ Thêm Gói VPS' }}
         </button>
       </div>

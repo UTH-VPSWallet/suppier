@@ -24,6 +24,8 @@ export class VPSComponent  {
   isEditing = false;
   deleteTargetId = 0;
   deleteTargetName = '';
+  loading: boolean = false;
+  btndisable: string = '';
 
   // Toast notification
   toast: { message: string; type: 'success' | 'error' | 'info' } | null = null;
@@ -72,7 +74,7 @@ export class VPSComponent  {
       RAM: '',
       Storage: '',
       PricePerMonth: 0,
-      Status: 0,
+      Status: 1,
       Email: ''
     };
   }
@@ -109,7 +111,8 @@ export class VPSComponent  {
       this.showToast('Vui lòng điền đầy đủ các trường bắt buộc!', 'error');
       return;
     }
-
+    this.loading = true;
+    this.btndisable = 'vps-btn--disabled';
     if (this.isEditing) {
       const edit = await this.vpsService.Edit(this.formData);
       if(edit.Status == httpCodes.OK){
@@ -125,6 +128,8 @@ export class VPSComponent  {
         this.BindData();
       } 
     }
+    this.loading = false;
+    this.btndisable = '';
     this.closeModal();
   }
 
@@ -144,6 +149,8 @@ export class VPSComponent  {
 
   // Confirm delete
   async confirmDelete() {
+    this.loading = true;
+    this.btndisable = 'vps-btn--disabled';
     this.vpss = this.vpss.filter(p => p.ID !== this.deleteTargetId);
     const del = await this.vpsService.Remove({ID: this.deleteTargetId})
     if(del.Status == httpCodes.OK){
@@ -151,6 +158,8 @@ export class VPSComponent  {
       this.closeDeleteConfirm();
       this.BindData();
     }
+    this.loading = false;
+    this.btndisable = '';
   }
 
   // Toast helper
