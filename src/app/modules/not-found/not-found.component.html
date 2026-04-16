@@ -12,12 +12,44 @@
     </p>
 
     <div class="notfound-actions">
+      <!-- Mặc định: Về Dashboard -->
       <a routerLink="/dashboard" class="auth-btn" style="display: inline-flex; align-items: center; gap: 0.5rem; width: auto; padding: 0.875rem 2rem;">
         ← Về Dashboard
       </a>
-      <a routerLink="/login" class="auth-btn auth-btn--outline" style="display: inline-flex; align-items: center; gap: 0.5rem; width: auto; padding: 0.875rem 2rem;">
-        Đăng Nhập
-      </a>
+
+      <!-- Chưa đăng nhập: Hiện nút Đăng Nhập -->
+      @if (!isLoggedIn) {
+        <a routerLink="/login" class="auth-btn auth-btn--outline" style="display: inline-flex; align-items: center; gap: 0.5rem; width: auto; padding: 0.875rem 2rem;">
+          Đăng Nhập
+        </a>
+      }
+      
+      <!-- Đã đăng nhập: Hiện Avatar + Menu -->
+      @if (isLoggedIn) {
+        <div style="position: relative; display: inline-block;">
+          <div class="crm-avatar tb-avatar-btn" (click)="toggleProfileMenu()" style="cursor: pointer;">
+            {{ getShortName(auth.Name) }}
+          </div>
+
+          @if (showProfileMenu) {
+            <div class="tb-dropdown tb-profile-panel" style="position: absolute; top: calc(100% + 5px); right: 0; min-width: 200px; text-align: left; z-index: 100;" (click)="$event.stopPropagation()">
+              <div class="tb-profile__top">
+                <div class="crm-avatar tb-profile__avatar">{{ getShortName(auth.Name) }}</div>
+                <div>
+                  <div class="tb-profile__name">{{ auth.Name }}</div>
+                  <div class="tb-profile__email">{{ auth.Email }}</div>
+                </div>
+              </div>
+              <div class="tb-divider"></div>
+              <div class="tb-profile__footer">
+                <button class="tb-logout-btn" (click)="logout()" style="width: 100%;">
+                  <span>🚪</span> Đăng Xuất
+                </button>
+              </div>
+            </div>
+          }
+        </div>
+      }
     </div>
   </div>
-</div>
+</div>

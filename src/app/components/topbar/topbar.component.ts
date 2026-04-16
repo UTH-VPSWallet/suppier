@@ -42,6 +42,11 @@ export class TopbarComponent {
     return this.notifications.filter(n => !n.read).length;
   }
 
+  get isMissingInfo(): boolean {
+    // If not logged in or missing fields
+    return !this.auth.Address || !this.auth.Dob;
+  }
+
   constructor(private router: Router) {}
 
   ngOnInit(){
@@ -51,6 +56,11 @@ export class TopbarComponent {
   bindData(){
     const local = localStorage.getItem(LOCALSTORAGE.AUTH);
     if(local) this.auth = JSON.parse(local);
+  }
+
+  // Refresh auth info when needed
+  refreshAuth() {
+    this.bindData();
   }
 
   toggleNotif() {
@@ -72,11 +82,17 @@ export class TopbarComponent {
     n.read = true;
   }
 
+  goToProfile() {
+    this.closeAll();
+    this.router.navigate(['/profile']);
+  }
+
   markAllRead() {
     this.notifications.forEach(n => n.read = true);
   }
 
   logout() {
+    localStorage.removeItem(LOCALSTORAGE.AUTH);
     this.closeAll();
     this.router.navigate(['/login']);
   }
