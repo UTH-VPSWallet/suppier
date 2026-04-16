@@ -26,6 +26,10 @@ export const routes: Routes = [
         loadComponent: () => import('./modules/orders/orders.component').then(m => m.OrdersComponent),
       },
       {
+        path: 'profile',
+        loadComponent: () => import('./modules/profile/profile.component').then(m => m.ProfileComponent),
+      },
+      {
         path: 'vps',
         loadComponent: () => import('./modules/vps/vps.component').then(m => m.VPSComponent),
       }

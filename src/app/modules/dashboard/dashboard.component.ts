@@ -1,5 +1,7 @@
 import { CurrencyPipe } from '@angular/common';
-import { Component } from "@angular/core";
+import { Component, OnInit } from "@angular/core";
+import { LOCALSTORAGE } from "../../constants/text.constant";
+import { LoginStorage } from "../../models/auth.model";
 
 @Component({
   selector: 'dashboard',
@@ -9,13 +11,28 @@ import { Component } from "@angular/core";
   styleUrls: ['./dashboard.component.scss']
 })
 
-export class DashboardComponent {
+export class DashboardComponent implements OnInit {
+  auth: LoginStorage = { Email: '', Name: '', Token: '' };
+
   currentDate = new Date().toLocaleDateString('vi-VN', {
     weekday: 'long',
     year: 'numeric',
     month: 'long',
     day: 'numeric',
   });
+
+  ngOnInit() {
+    this.bindData();
+  }
+
+  bindData() {
+    try {
+      const local = localStorage.getItem(LOCALSTORAGE.AUTH);
+      if (local) this.auth = JSON.parse(local);
+    } catch (e) {
+      console.error(e);
+    }
+  }
 
   stats: StatCard[] = [
     { label: 'Tổng Doanh Thu', value: '₫48.5M', trend: '12.5% so tháng trước', trendUp: true, icon: '💰', iconBg: '#dcfce7' },

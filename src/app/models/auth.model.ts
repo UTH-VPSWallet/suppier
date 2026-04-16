@@ -10,4 +10,6 @@ export interface LoginStorage {
     Email: string;
     Name: string;
     Token: string;
+    Address?: string;
+    Dob?: string;
 }
