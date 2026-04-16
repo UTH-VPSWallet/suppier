@@ -80,7 +80,7 @@
         <input type="password" class="form-input" placeholder="Nhập lại mật khẩu mới" formControlName="confirmPassword" />
       </div>
 
-      <button type="submit" class="btn-submit">Cập Nhật Mật Khẩu</button>
+      <button type="submit" class="btn-submit" [disabled]="loading">Cập Nhật Mật Khẩu</button>
     </form>
   </div>
 </div>

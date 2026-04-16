@@ -1,7 +1,6 @@
 import { Injectable } from "@angular/core";
 import { lastValueFrom } from "rxjs";
 import { API_ENDPOINTS } from "../constants/api-endpoints";
-import { VPSCreateReq, VPSDeleteReq, VPSGetAllReq, VPSGetAllRes, VPSUpdateReq } from "../models/vps.model";
 import { ApiService } from "./api.service";
 import { Res, ResData } from "../models/res.model";
 import { ChangePassReq, ForgotPassReq, ForgotPassRes } from "../models/supplier.model";

@@ -1,7 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { LOCALSTORAGE } from '../../constants/text.constant';
 import { LoginStorage } from '../../models/auth.model';
+import { SupplierService } from '../../services/supplier.service';
+import { httpCodes } from '../../constants/enum.constant';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-profile',
@@ -29,6 +32,14 @@ export class ProfileComponent implements OnInit {
 
   infoSuccessMessage = '';
   infoErrorMessage = '';
+
+  loading = false;
+
+  constructor(
+    private supplierService: SupplierService,
+    private router: Router,
+    private cdr: ChangeDetectorRef
+  ) {}
 
   ngOnInit() {
     this.bindData();
@@ -81,7 +92,7 @@ export class ProfileComponent implements OnInit {
     return name.split(' ').filter(w => w).map(w => w[0].toUpperCase()).join('');
   }
 
-  onChangePassword() {
+  async onChangePassword() {
     this.successMessage = '';
     this.errorMessage = '';
 
@@ -97,10 +108,18 @@ export class ProfileComponent implements OnInit {
       return;
     }
 
-    // Giả lập API gọi đổi mật khẩu
-    setTimeout(() => {
-      this.successMessage = 'Đổi mật khẩu thành công!';
-      this.passwordForm.reset();
-    }, 500);
+    const req = {
+      Email: this.auth.Email,
+      Pass: currentPassword,
+      PassNew: newPassword
+    };
+    this.loading = true;
+    const changePass = await this.supplierService.ChangePass(req);
+    this.loading = false;
+    if(changePass.Status === httpCodes.OK) this.router.navigate(['/login']);
+    else{
+      this.errorMessage = changePass.Message || 'Đổi mật khẩu thất bại!';
+      this.cdr.detectChanges();
+    }
   }
 }
