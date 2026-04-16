@@ -42,11 +42,6 @@ export class TopbarComponent {
     return this.notifications.filter(n => !n.read).length;
   }
 
-  get isMissingInfo(): boolean {
-    // If not logged in or missing fields
-    return !this.auth.Address || !this.auth.Dob;
-  }
-
   constructor(private router: Router) {}
 
   ngOnInit(){
