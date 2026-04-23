@@ -29,4 +29,9 @@ export const API_ENDPOINTS =  {
     EDIT: 'supplier/edit',
     REMOVE: 'supplier/remove'
   },
+  ORDER: {
+    CONTROLLER: API_URL  + "order/",
+    GET_ALL: 'supplier/get-all',
+    ADD: 'supplier/add',
+  },
 }
