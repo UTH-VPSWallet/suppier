@@ -18,11 +18,11 @@
     <select [(ngModel)]="statusFilter"
       style="border: 1px solid #e2e8f0; border-radius: 10px; padding: 0.5rem 0.75rem; font-size: 13px; outline: none;">
       <option value="">Tất cả trạng thái</option>
-      <option value="active">Hoạt động</option>
-      <option value="pending">Chờ xử lý</option>
-      <option value="paid">Đã thanh toán</option>
-      <option value="expired">Hết hạn</option>
-      <option value="cancelled">Đã hủy</option>
+      <option value="0">Hoạt động</option>
+      <option value="1">Chờ xử lý</option>
+      <option value="2">Đã thanh toán</option>
+      <option value="3">Hết hạn</option>
+      <option value="4">Đã hủy</option>
     </select>
   </div>
 
@@ -170,11 +170,11 @@
           <div class="form-group">
             <label>Trạng thái</label>
             <select [(ngModel)]="editForm.status">
-              <option value="active">✅ Hoạt động</option>
-              <option value="pending">⏳ Chờ xử lý</option>
-              <option value="paid">💳 Đã thanh toán</option>
-              <option value="expired">⌛ Hết hạn</option>
-              <option value="cancelled">❌ Đã hủy</option>
+              <option value="0">✅ Hoạt động</option>
+              <option value="1">⏳ Chờ xử lý</option>
+              <option value="2">💳 Đã thanh toán</option>
+              <option value="3">⌛ Hết hạn</option>
+              <option value="4">❌ Đã hủy</option>
             </select>
           </div>
         </div>
