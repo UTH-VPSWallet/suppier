@@ -19,3 +19,8 @@ export interface OrderDetailRes {
   TotalMonth: number;
   PriceAtPurchase: number;
 }
+
+export interface OrderUpdateStatusReq {
+  ID: number;
+  Status: number;
+}

@@ -33,5 +33,6 @@ export const API_ENDPOINTS =  {
     CONTROLLER: API_URL  + "order/",
     GET_ALL: 'supplier/get-all',
     ADD: 'supplier/add',
+    UPDATE_STATUS: 'update-status'
   },
 }

@@ -4,7 +4,7 @@ import { API_ENDPOINTS } from "../constants/api-endpoints";
 import { VPSCreateReq, VPSDeleteReq, VPSGetAllReq, VPSGetAllRes, VPSUpdateReq } from "../models/vps.model";
 import { ApiService } from "./api.service";
 import { Res, ResData } from "../models/res.model";
-import { GetOrderBySupplierReq, GetOrderBySupplierRes } from "../models/order.model";
+import { GetOrderBySupplierReq, GetOrderBySupplierRes, OrderUpdateStatusReq } from "../models/order.model";
 
 @Injectable({ providedIn: 'root' })
 export class OrderService extends ApiService {
@@ -17,12 +17,8 @@ export class OrderService extends ApiService {
         const url = API_ENDPOINTS.ORDER.CONTROLLER + API_ENDPOINTS.ORDER.ADD;
         return await lastValueFrom(this.post<Res>(url, req));
     }
-    // async Edit(req: VPSUpdateReq): Promise<Res> {
-    //     const url = API_ENDPOINTS.VPS.CONTROLLER + API_ENDPOINTS.VPS.EDIT;
-    //     return await lastValueFrom(this.post<Res>(url, req));
-    // }
-    // async Remove(req: VPSDeleteReq): Promise<Res> {
-    //     const url = API_ENDPOINTS.VPS.CONTROLLER + API_ENDPOINTS.VPS.REMOVE;
-    //     return await lastValueFrom(this.post<Res>(url, req));
-    // }
+    async Edit(req: OrderUpdateStatusReq): Promise<Res> {
+        const url = API_ENDPOINTS.ORDER.CONTROLLER + API_ENDPOINTS.ORDER.UPDATE_STATUS;
+        return await lastValueFrom(this.post<Res>(url, req));
+    }
 }
